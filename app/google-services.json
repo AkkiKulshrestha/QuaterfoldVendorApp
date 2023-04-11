@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928642427701",
+    "project_id": "quaterfoldvendorapp",
+    "storage_bucket": "quaterfoldvendorapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928642427701:android:09af6bb96025c755f9ba7c",
+        "android_client_info": {
+          "package_name": "com.quaterfoldvendorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928642427701-foupo94vq6c6jat4g5tbqu8rkn8uco6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3ZgNhFnrihXx8gxTxbXkJKrMwGZ9qYbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928642427701-foupo94vq6c6jat4g5tbqu8rkn8uco6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

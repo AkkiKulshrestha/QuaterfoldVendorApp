@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.quaterfoldvendorapp",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 100010000,
+      "versionName": "1.0.0",
+      "outputFile": "quaterfoldvendorapp-v1.0.0-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/p_background"
+    tools:context=".ui.LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/dp200"
+        android:layout_height="@dimen/dp200"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/user_id_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp27"
+        android:layout_marginTop="@dimen/layout_margin_double"
+        android:drawableStart="@drawable/ic_user"
+        android:drawablePadding="@dimen/dp10"
+        android:includeFontPadding="false"
+        android:text="@string/userid_mobile"
+        android:textColor="@color/p_support"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edit_phone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_marginHorizontal="@dimen/dp27"
+        android:layout_marginTop="@dimen/dp10"
+        android:background="@drawable/ic_edittext_bg"
+        android:hint="@string/enter_email_mobile"
+        android:imeOptions="actionNext"
+        android:inputType="number"
+        android:maxLength="10"
+        android:paddingHorizontal="@dimen/dp10"
+        android:textColorHint="@color/p_support"
+        app:layout_constraintStart_toStartOf="@+id/user_id_mobile"
+        app:layout_constraintTop_toBottomOf="@+id/user_id_mobile" />
+
+    <TextView
+        android:id="@+id/errorphone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp5"
+        android:text="@string/enter_email_mobile"
+        android:textColor="@color/error_support"
+        android:textSize="@dimen/sp14"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/user_id_mobile"
+        app:layout_constraintTop_toBottomOf="@+id/edit_phone" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp15"
+        android:drawableStart="@drawable/ic_key"
+        android:drawablePadding="@dimen/dp10"
+        android:includeFontPadding="false"
+        android:text="@string/password"
+        android:textColor="@color/p_support"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/errorphone"
+        app:layout_constraintTop_toBottomOf="@+id/errorphone" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:layout_marginHorizontal="@dimen/dp27"
+        android:layout_marginTop="@dimen/dp10"
+        android:background="@drawable/ic_edittext_bg"
+        android:hint="@string/enter_password"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:paddingHorizontal="@dimen/dp10"
+        android:textColorHint="@color/p_support"
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <TextView
+        android:id="@+id/errorpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp5"
+        android:text="@string/enter_password"
+        android:textSize="@dimen/sp14"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+
+    <TextView
+        android:id="@+id/forgot_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginEnd="@dimen/dp28"
+        android:text="@string/forget_pass"
+        android:textColor="@color/black_support"
+        android:textSize="@dimen/sp14"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorpass" />
+
+    <TextView
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp42"
+        android:layout_marginHorizontal="@dimen/dp30"
+        android:background="@color/secondary"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forgot_pass"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,1008 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="PolyCameraTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <!--Any text styling can be done here-->
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="titleTextAppearance">@style/TextView.LightFont.NormalStyle.White.Medium</item>
+        <item name="subtitleTextAppearance">@style/TextView.LightFont.NormalStyle.White.Small</item>
+    </style>
+
+    <style name="Theme.MaterialComponents.Light.ActionBar" parent="@style/Theme.MaterialComponents.Light">
+        <item name="android:windowNoTitle">false</item>
+        <item name="windowActionBar">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:toolbarStyle">?attr/toolbarStyle</item>
+        <item name="android:statusBarColor">@color/primary</item>
+    </style>
+
+    <style name="DefaultTextView" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:colorControlNormal">@color/black_almost</item>
+        <item name="android:textColor">@color/black_main</item>
+        <item name="android:textColorHint">@color/black_light</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
+    <style name="TextView.RegularFont" parent="DefaultTextView">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle" parent="TextView.RegularFont">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary" parent="TextView.RegularFont.NormalStyle">
+        <item name="android:textColor">@color/black_main</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.XLargeMini" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large_mini</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.XLarge" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.Large" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.Medium" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.Small" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.XSmall" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkPrimary.XXSmall" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.White" parent="TextView.RegularFont.NormalStyle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.White.XLarge" parent="TextView.RegularFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.White.Large" parent="TextView.RegularFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.White.Medium" parent="TextView.RegularFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.White.Small" parent="TextView.RegularFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.White.XSmall" parent="TextView.RegularFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary" parent="TextView.RegularFont.NormalStyle">
+        <item name="android:textColor">@color/black_support</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary.XLarge" parent="TextView.RegularFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary.Large" parent="TextView.RegularFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary.Medium" parent="TextView.RegularFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary.Small" parent="TextView.RegularFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary.XSmall" parent="TextView.RegularFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.DarkSecondary.XXSmall" parent="TextView.RegularFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+
+    <style name="TextView.RegularFont.BoldStyle" parent="TextView.RegularFont">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary" parent="TextView.RegularFont.BoldStyle">
+        <item name="android:textColor">@color/black_main</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.XXLarge" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.XLargeMini" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large_mini</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.XLarge" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.Large" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.Medium" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.Small" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.XSmall" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkPrimary.XXSmall" parent="TextView.RegularFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary" parent="TextView.RegularFont.BoldStyle">
+        <item name="android:textColor">@color/black_support</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.XLarge" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.XLargeMini" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_extra_large_mini</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.Large" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.Medium" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.Small" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.XSmall" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.RegularFont.BoldStyle.DarkSecondary.XXSmall" parent="TextView.RegularFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+
+    <style name="TextView.RegularFont.NormalStyle.Black" parent="TextView.RegularFont.NormalStyle">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.Black.XLarge" parent="TextView.RegularFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.Black.XLargeMini" parent="TextView.RegularFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_extra_large_mini</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.Black.Large" parent="TextView.RegularFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.Black.Medium" parent="TextView.RegularFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.Black.Small" parent="TextView.RegularFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.Black.XSmall" parent="TextView.RegularFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary" parent="TextView.RegularFont.NormalStyle">
+        <item name="android:textColor">@color/black_light</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary.XLarge" parent="TextView.RegularFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary.Large" parent="TextView.RegularFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary.Medium" parent="TextView.RegularFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary.Small" parent="TextView.RegularFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary.XSmall" parent="TextView.RegularFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.RegularFont.NormalStyle.LightSecondary.XXSmall" parent="TextView.RegularFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+
+    <style name="TextView.RegularFont.NormalStyle.Amount.Medium" parent="TextView.RegularFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont" parent="DefaultTextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle" parent="TextView.LightFont">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.Black" parent="TextView.LightFont.BoldStyle">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.Black.XLarge" parent="TextView.LightFont.BoldStyle.Black">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.Black.Large" parent="TextView.LightFont.BoldStyle.Black">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.Black.Medium" parent="TextView.LightFont.BoldStyle.Black">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.Black.Small" parent="TextView.LightFont.BoldStyle.Black">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary" parent="TextView.LightFont.BoldStyle">
+        <item name="android:textColor">@color/black_main</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary.XLarge" parent="TextView.LightFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary.Large" parent="TextView.LightFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary.XLargeMini" parent="TextView.LightFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large_mini</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary.Medium" parent="TextView.LightFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary.Small" parent="TextView.LightFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkPrimary.xSmall" parent="TextView.LightFont.BoldStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkSecondary" parent="TextView.LightFont.BoldStyle">
+        <item name="android:textColor">@color/black_support</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkSecondary.XLarge" parent="TextView.LightFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkSecondary.Large" parent="TextView.LightFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkSecondary.Medium" parent="TextView.LightFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkSecondary.Small" parent="TextView.LightFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.DarkSecondary.XSmall" parent="TextView.LightFont.BoldStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightSecondary" parent="TextView.LightFont.BoldStyle">
+        <item name="android:textColor">@color/black_light</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightSecondary.XLarge" parent="TextView.LightFont.BoldStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightSecondary.Large" parent="TextView.LightFont.BoldStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightSecondary.Medium" parent="TextView.LightFont.BoldStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightSecondary.Small" parent="TextView.LightFont.BoldStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightSecondary.XSmall" parent="TextView.LightFont.BoldStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightPrimary" parent="TextView.LightFont.BoldStyle">
+        <item name="android:textColor">@color/black_almost</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightPrimary.XLarge" parent="TextView.LightFont.BoldStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightPrimary.Large" parent="TextView.LightFont.BoldStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightPrimary.Medium" parent="TextView.LightFont.BoldStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.LightPrimary.Small" parent="TextView.LightFont.BoldStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.White" parent="TextView.LightFont.BoldStyle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.White.XLarge" parent="TextView.LightFont.BoldStyle.White">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.White.Large" parent="TextView.LightFont.BoldStyle.White">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.White.Medium" parent="TextView.LightFont.BoldStyle.White">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.BoldStyle.White.Small" parent="TextView.LightFont.BoldStyle.White">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle" parent="TextView.LightFont">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary" parent="TextView.LightFont.NormalStyle">
+        <item name="android:textColor">@color/black_main</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary.XLarge" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary.XLargeMini" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_extra_large_mini</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary.Large" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary.Medium" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary.Small" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkPrimary.xSmall" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkSecondary" parent="TextView.LightFont.NormalStyle">
+        <item name="android:textColor">@color/black_support</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkSecondary.XLarge" parent="TextView.LightFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkSecondary.Large" parent="TextView.LightFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkSecondary.Medium" parent="TextView.LightFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkSecondary.Small" parent="TextView.LightFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.DarkSecondary.XSmall" parent="TextView.LightFont.NormalStyle.DarkSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightSecondary" parent="TextView.LightFont.NormalStyle">
+        <item name="android:textColor">@color/black_light</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightSecondary.XLarge" parent="TextView.LightFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightSecondary.Large" parent="TextView.LightFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightSecondary.Medium" parent="TextView.LightFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightSecondary.Small" parent="TextView.LightFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightSecondary.XSmall" parent="TextView.LightFont.NormalStyle.LightSecondary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightPrimary" parent="TextView.LightFont.NormalStyle">
+        <item name="android:textColor">@color/black_almost</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightPrimary.XLarge" parent="TextView.LightFont.NormalStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightPrimary.Large" parent="TextView.LightFont.NormalStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightPrimary.Medium" parent="TextView.LightFont.NormalStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightPrimary.Small" parent="TextView.LightFont.NormalStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.LightPrimary.XSmall" parent="TextView.LightFont.NormalStyle.LightPrimary">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black" parent="TextView.LightFont.NormalStyle">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black.XLarge" parent="TextView.LightFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black.Large" parent="TextView.LightFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black.Medium" parent="TextView.LightFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black.Small" parent="TextView.LightFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black.xSmall" parent="TextView.LightFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Black.xxSmall" parent="TextView.LightFont.NormalStyle.Black">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White" parent="TextView.LightFont.NormalStyle">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White.XLarge" parent="TextView.LightFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White.Large" parent="TextView.LightFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White.Medium" parent="TextView.LightFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White.Small" parent="TextView.LightFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White.xSmall" parent="TextView.LightFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_xsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.White.xxSmall" parent="TextView.LightFont.NormalStyle.White">
+        <item name="android:textSize">@dimen/text_xxsmall</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Amount.Medium" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextView.LightFont.NormalStyle.Amount.Small" parent="TextView.LightFont.NormalStyle.DarkPrimary">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextInputLayoutError" parent="DefaultTextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Bridge">
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/secondary</item>
+        <item name="android:windowTitleStyle">
+            @style/TextView.RegularFont.NormalStyle.DarkPrimary.XLarge
+        </item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert.Bridge">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/secondary</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button.Neutral</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Neutral</item>
+
+        <item name="android:windowTitleStyle">
+            @style/TextView.RegularFont.NormalStyle.DarkPrimary.XLarge
+        </item>
+    </style>
+
+    <style name="CustomeAlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert.Bridge">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="android:background">@color/p_background</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button.Neutral</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Neutral</item>
+
+        <item name="android:windowTitleStyle">
+            @style/TextView.RegularFont.NormalStyle.DarkPrimary.XLarge
+        </item>
+    </style>
+
+    <style name="TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextButton.NoCaps" parent="TextButton">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorControlNormal">@color/black_almost</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="android:textColorHint">@color/black_light</item>
+    </style>
+
+    <style name="TextInputLayoutOutlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColorHint">@color/black_light</item>
+        <item name="boxStrokeWidth">0.5dp</item>
+    </style>
+
+    <style name="TextInputLayoutOutlinedExposed" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColorHint">@color/black_light</item>
+        <item name="boxStrokeWidth">0.5dp</item>
+    </style>
+
+
+    <style name="Alert.Button.Positive" parent="TextButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+        <item name="android:paddingStart">4dip</item>
+        <item name="android:paddingEnd">4dip</item>
+    </style>
+
+    <style name="Alert.Button.Neutral" parent="TextButton">
+        <item name="android:textColor">@color/black_support</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+        <item name="android:paddingStart">4dip</item>
+        <item name="android:paddingEnd">4dip</item>
+    </style>
+
+    <style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:minWidth">32dip</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+        <item name="android:paddingStart">4dip</item>
+        <item name="android:paddingEnd">4dip</item>
+    </style>
+
+    <style name="Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/primary</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <style name="ViewPager">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_slide_up_animation</item>
+        <item name="android:windowExitAnimation">@anim/dialog_slide_down_animation</item>
+    </style>
+
+    <style name="ToggleSwitchTheme" parent="Theme.MaterialComponents.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/primary</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/black_light</item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/black_light</item>
+    </style>
+
+    <style name="MySwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColorPrimaryDisableOnly">@color/black_light</item>
+        <item name="android:colorControlActivated">@color/primary</item>
+        <item name="android:colorForeground">@color/secondary</item>
+    </style>
+
+    <style name="bottomSheetPositiveButton" parent="StyleMaterialButton">
+        <item name="minHeight">@dimen/button_height</item>
+        <item name="android:gravity">center|center_horizontal|center_vertical</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeTopLeft">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomLeft">@dimen/layout_margin_quarter</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundColor">@color/primary</item>
+        <item name="android:textAppearance">
+            @style/TextView.LightFont.BoldStyle.DarkPrimary.Medium
+        </item>
+        <item name="android:layout_margin">@dimen/layout_margin_full</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="PartyItemMaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:minHeight">@dimen/default_view_height</item>
+        <item name="android:textAppearance">@style/TextView.RegularFont.NormalStyle.Black.Medium
+        </item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black_support</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/black_support</item>
+    </style>
+
+    <style name="StyleOutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:padding">@dimen/layout_padding_half</item>
+        <item name="strokeColor">@color/mtrl_btn_stroke_color_selector</item>
+        <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
+    </style>
+
+    <style name="StyleMaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="minHeight">@dimen/button_height</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeTopLeft">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomLeft">@dimen/layout_margin_quarter</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundColor">@color/primary</item>
+        <item name="android:textAppearance">
+            @style/TextView.LightFont.BoldStyle.DarkPrimary.Medium
+        </item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="StyleMaterialOutlineButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="minHeight">@dimen/button_height</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeTopLeft">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomLeft">@dimen/layout_margin_quarter</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="android:textAppearance">
+            @style/TextView.RegularFont.BoldStyle.DarkPrimary.Medium
+        </item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="StyleMaterialTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="minHeight">@dimen/button_height</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="android:textAppearance">
+            @style/TextView.RegularFont.BoldStyle.DarkPrimary.Small
+        </item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="StyleMaterialTextButtonWithShadow" parent="StyleMaterialTextButton">
+        <item name="minHeight">@dimen/default_view_height</item>
+        <item name="backgroundColor">@color/primary</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="android:textAppearance">
+            @style/TextView.RegularFont.NormalStyle.DarkSecondary.Small
+        </item>
+        <item name="textAllCaps">false</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:translationZ">@dimen/siq_2</item>
+        <item name="android:elevation">@dimen/siq_2</item>
+        <item name="android:shadowDx">4</item>
+        <item name="android:shadowDy">4</item>
+        <item name="android:radius">@dimen/siq_4</item>
+        <item name="android:textColor">@color/black_support</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:shadowColor">@color/primary</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">
+            @color/primary
+        </item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/primary</item>
+        <item name="android:outlineProvider">background</item>
+    </style>
+
+    <style name="RoundedBottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundedBottomSheetModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+
+    <style name="RoundedBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_card</item>
+    </style>
+
+    <style name="TransparentBottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="colorPrimary">@color/primary</item>
+    </style>
+
+    <style name="TransparentBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="AutoReminderOutlineButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:textSize">@dimen/text_xsmall</item>
+        <item name="android:padding">@dimen/layout_padding_half</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="StyleBottomMessageBarActionButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:textSize">@dimen/text_xsmall</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="tabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/black_support</item>
+        <item name="android:textStyle">normal</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="StyleMaterialOutlineButtonRemoveLedger" parent="StyleMaterialOutlineButton">
+        <item name="android:textColor">@color/error_main</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="strokeColor">@color/error_main</item>
+        <item name="android:textAppearance">
+            @style/TextView.LightFont.BoldStyle.DarkPrimary.Medium
+        </item>
+    </style>
+
+    <style name="CustomSwitchStyle" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColorPrimaryDisableOnly">@color/black_main</item>
+        <item name="android:colorControlActivated">@color/primary</item>
+        <item name="android:colorForeground">@color/black_main</item>
+        <item name="thumbTint">@color/secondary</item>
+        <item name="trackTint">@color/secondary</item>
+        <item name="android:textAppearance">
+            @style/TextView.RegularFont.BoldStyle.DarkPrimary.Medium
+        </item>
+    </style>
+
+    <style name="CustomSwitchDarkStyle" parent="CustomSwitchStyle">
+        <item name="trackTint">@color/secondary</item>
+    </style>
+
+    <style name="BottomSheetPositiveButtonNewStyle" parent="StyleMaterialOutlineButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:gravity">center|center_horizontal|center_vertical</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeTopLeft">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomLeft">@dimen/layout_margin_quarter</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundColor">@color/primary</item>
+        <item name="android:shadowColor">@color/primary</item>
+        <item name="android:outlineProvider">bounds</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@color/primary</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/primary</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">4</item>
+        <item name="elevation">@dimen/siq_8</item>
+        <item name="android:translationZ">@dimen/siq_8</item>
+        <item name="android:textAppearance">
+            @style/TextView.RegularFont.BoldStyle.DarkPrimary.Small
+        </item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="bottomSheetPositiveButtonWithShadow" parent="BottomSheetPositiveButtonNewStyle">
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="StyleMaterialOutlineButtonNewStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="cornerRadius">@dimen/siq_4</item>
+        <item name="cornerSizeTopRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeTopLeft">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomRight">@dimen/layout_margin_quarter</item>
+        <item name="cornerSizeBottomLeft">@dimen/layout_margin_quarter</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="android:textAppearance">
+            @style/TextView.RegularFont.BoldStyle.DarkPrimary.Small
+        </item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <!--This is a small hack. When we upgraded the material library,
+    some other library is referring to this style, which is not there in the latest version.
+    Thus we have hardcoded the styles for now. We will remove this code once we identify which
+    library is using this style.-->
+    <style name="ThemeOverlay.MaterialComponents.Light.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">
+            @style/Animation.MaterialComponents.BottomSheetDialog
+        </item>
+        <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
+    </style>
+
+</resources>

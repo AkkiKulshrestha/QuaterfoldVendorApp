@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">QuaterfoldVendorApp</string>
+    <string name="action_logout">Logout</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="login">Login</string>
+    <string name="forget_pass">Forgot Password</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="password">Password</string>
+    <string name="enter_email_mobile">Enter Mobile no</string>
+    <string name="userid_mobile">Mobile No.</string>
+    <string name="execute">Execute</string>
+    <string name="wall_painting">Wall Painting</string>
+    <string name="upload_save_images"><![CDATA[Upload & Save Images]]></string>
+    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
+    <string name="permission_rationale">Please grant location permission to start the service</string>
+    <string name="title_alert_no_intenet">No internet</string>
+    <string name="msg_alert_no_internet">Please make sure that you have active internet connection.</string>
+    <string name="btn_label_refresh">Refresh</string>
+
+    <string name="permission_denied_explanation">You have not granted location permission. So the service cannot be started.</string>
+    <string name="settings">settings</string>
+</resources>

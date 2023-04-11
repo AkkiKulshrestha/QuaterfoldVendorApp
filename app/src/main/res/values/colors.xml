@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Color Shade -->
+    <color name="primary">#0094FF</color>
+    <color name="p_support">#32AAFF</color>
+    <color name="p_light">#A8DBFF</color>
+    <!-- Used for Ripple Effects-->
+    <color name="p_ripple">#DEF1FF</color>
+    <color name="p_almost">#F1F7FB</color>
+    <!-- Primary Backgrounds -->
+    <color name="p_background">#F5FBFF</color>
+    <color name="color_tap_target_background">#038DCC</color>
+
+    <!-- Secondary Color Shades -->
+    <color name="secondary">#E35A29</color>
+    <color name="s_support">#F47E52</color>
+    <color name="s_light">#F9D9CE</color>
+    <color name="s_almost">#FBEAE3</color>
+
+    <!-- Grayscale colors -->
+    <color name="black_main">#3B4250</color>
+    <color name="black_support">#6A707F</color>
+    <color name="black_light">#A3A6AD</color>
+    <color name="black_almost">#F5F5F5</color>
+    <color name="white_mild">#FAFAFA</color>
+    <color name="white">@android:color/white</color>
+
+    <!-- Success colors -->
+    <color name="success_main">#27C281</color>
+    <color name="success_support">#61E9B0</color>
+    <color name="success_light">#C8FAE5</color>
+    <color name="success_almost">#EFFDF7</color>
+
+    <!-- Error Colors -->
+    <color name="error_main">#EA3B3B</color>
+    <color name="error_support">#E95B6D</color>
+    <color name="error_light">#FCEAEC</color>
+    <color name="error_almost">#FEF6F7</color>
+
+    <!-- Warning Colors -->
+    <color name="warning_main">#F0AF23</color>
+    <color name="warning_support">#FFD86F</color>
+    <color name="warning_light">#FFEEC2</color>
+    <color name="warning_almost">#FFFBF1</color>
+    <color name="color_shimmer_base">#DEE4EF</color>
+    <color name="color_shimmer_highlight">#A6B4D6</color>
+    <color name="settings_background">#F5FBFF</color>
+
+    <!-- Nav Backgrounds -->
+    <color name="nav_background">@color/p_light</color>
+
+    <!-- Notification Colors -->
+    <color name="color_notification_title">@color/black_support</color>
+    <color name="color_notification_text">@color/black_main</color>
+    <color name="color_notification_message">#6C6C6C</color>
+</resources>
