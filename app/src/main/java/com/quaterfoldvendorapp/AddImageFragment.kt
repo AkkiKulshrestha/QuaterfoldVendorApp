@@ -341,7 +341,6 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
                 imageObj.put("image_bitmap", card6PicBytes)
                 imageArray.put(imageObj)
             }
-
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -365,7 +364,7 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
                         progressDialog?.dismiss()
                     }
                     if (!msg.isNullOrEmpty()) {
-                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     }
                 }
             })
@@ -475,63 +474,63 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
         val imgFile = File(filePath)
         if (imgFile.exists()) {
             val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-            //val rotatedBitmap = rotateFileAsPerOrientation(filePath, myBitmap)
+            val rotatedBitmap = rotateFileAsPerOrientation(filePath, myBitmap)
             if (null != myBitmap) {
                 //myBitmap = setLatLongToBitmap(myBitmap)
-                val base64Image = getEncoded64ImageStringFromBitmap(myBitmap)
+                val base64Image = getEncoded64ImageStringFromBitmap(rotatedBitmap)
                 when (is_set) {
                     1 -> {
                         val card1PhotoPath = filePath
                         card1PicBytes = base64Image
-                        binding.imageView1.setImageBitmap(myBitmap)
+                        binding.imageView1.setImageBitmap(rotatedBitmap)
                         binding.imageView1.visible()
                         binding.imageView1.setOnClickListener {
-                            viewImageFromURL(myBitmap)
+                            viewImageFromURL(rotatedBitmap)
                         }
                     }
                     2 -> {
                         val card21PhotoPath = filePath
                         card2PicBytes = base64Image
-                        binding.imageView2.setImageBitmap(myBitmap)
+                        binding.imageView2.setImageBitmap(rotatedBitmap)
                         binding.imageView2.visible()
                         binding.imageView2.setOnClickListener {
-                            viewImageFromURL(myBitmap)
+                            viewImageFromURL(rotatedBitmap)
                         }
                     }
                     3 -> {
                         val card3PhotoPath = filePath
                         card3PicBytes = base64Image
-                        binding.imageView3.setImageBitmap(myBitmap)
+                        binding.imageView3.setImageBitmap(rotatedBitmap)
                         binding.imageView3.visible()
                         binding.imageView3.setOnClickListener {
-                            viewImageFromURL(myBitmap)
+                            viewImageFromURL(rotatedBitmap)
                         }
                     }
                     4 -> {
                         val card4PhotoPath = filePath
                         card4PicBytes = base64Image
-                        binding.imageView4.setImageBitmap(myBitmap)
+                        binding.imageView4.setImageBitmap(rotatedBitmap)
                         binding.imageView4.visible()
                         binding.imageView4.setOnClickListener {
-                            viewImageFromURL(myBitmap)
+                            viewImageFromURL(rotatedBitmap)
                         }
                     }
                     5 -> {
                         val card5PhotoPath = filePath
                         card5PicBytes = base64Image
-                        binding.imageView5.setImageBitmap(myBitmap)
+                        binding.imageView5.setImageBitmap(rotatedBitmap)
                         binding.imageView5.visible()
                         binding.imageView5.setOnClickListener {
-                            viewImageFromURL(myBitmap)
+                            viewImageFromURL(rotatedBitmap)
                         }
                     }
                     6 -> {
                         val card6PhotoPath = filePath
                         card6PicBytes = base64Image
-                        binding.imageView6.setImageBitmap(myBitmap)
+                        binding.imageView6.setImageBitmap(rotatedBitmap)
                         binding.imageView6.visible()
                         binding.imageView6.setOnClickListener {
-                            viewImageFromURL(myBitmap)
+                            viewImageFromURL(rotatedBitmap)
                         }
                     }
                 }
@@ -606,7 +605,7 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
 
     private fun getEncoded64ImageStringFromBitmap(bitmap: Bitmap): String {
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream)
         val byteFormat = stream.toByteArray()
         // get the base 64 string
         return Base64.encodeToString(byteFormat, Base64.NO_WRAP)
