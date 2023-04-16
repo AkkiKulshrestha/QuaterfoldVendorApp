@@ -2,7 +2,14 @@ package com.quaterfoldvendorapp.data
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+
+@JsonClass(generateAdapter = true)
+data class AssignmentModel(
+    val status: String? = null,
+    val data: List<Assignment>? = null
+)
 
 @Parcelize
 data class Assignment(
@@ -24,3 +31,28 @@ data class Assignment(
     @SerializedName("wall_covered") var wall_covered: Int = 0,
     @SerializedName("sq_ft_covered") var sq_ft_covered: Int = 0
 ) : Parcelable
+
+@JsonClass(generateAdapter = true)
+data class AssignmentRequest(
+    var vendor_id: String? = null
+)
+
+
+@JsonClass(generateAdapter = true)
+data class AssignmentSaveRequest(
+    var images: List<AssignmentImageRequest>? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class AssignmentImageRequest(
+    var project_id: String? = null,
+    var customer_id: String? = null,
+    var assignment_id: String? = null,
+    var assignment_code: String? = null,
+    var wall_id: String? = null,
+    var lat: Double? = null,
+    var long: Double? = null,
+    var sq_ft_covered: String? = null,
+    var imei: String? = null,
+    var image_bitmap: String? = null
+)

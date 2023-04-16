@@ -35,16 +35,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage
 import com.quaterfoldvendorapp.data.Assignment
+import com.quaterfoldvendorapp.data.AssignmentImageRequest
+import com.quaterfoldvendorapp.data.AssignmentSaveRequest
+import com.quaterfoldvendorapp.data.Resource
 import com.quaterfoldvendorapp.data.local.dao.WallDao
 import com.quaterfoldvendorapp.databinding.FragmentUploadImageBinding
+import com.quaterfoldvendorapp.domain.ApiViewModel
 import com.quaterfoldvendorapp.interfaces.UploadImagesCallback
 import com.quaterfoldvendorapp.utils.*
+import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.collections.ArrayList
 
 
 /**
@@ -60,6 +70,7 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
 
     private val PERMISSION_REQUEST_CODE = 200
     private lateinit var assignment: Assignment
+    private val viewModel: ApiViewModel by viewModel()
 
     var is_set = 0
     var permissions = arrayOf(
@@ -74,13 +85,16 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     var IMEI: String? = null
+    var wallId: String? = null
     private var card1PicBytes: String? = null
     private var card2PicBytes: String? = null
     private var card3PicBytes: String? = null
     private var card4PicBytes: String? = null
     private var card5PicBytes: String? = null
     private var card6PicBytes: String? = null
-    var progressDialog: ProgressDialog? = null
+    lateinit var progressDialog: ProgressDialog
+    private var imageArray: ArrayList<AssignmentImageRequest>? = ArrayList()
+    private var imageArray1: JSONArray? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,47 +103,63 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
 
         binding = FragmentUploadImageBinding.inflate(inflater, container, false)
         assignment = navArgs.assignment
-        IMEI = getDeviceIMEI()
-        Log.d("IMEI", " -->$IMEI")
+
+        progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("Please Wait")
+        progressDialog.setCancelable(false)
+
+        IMEI = DeviceInfoUtils.getIMEI(requireActivity())
+        attachObserver()
+
         initView()
 
         return binding.root
 
     }
 
-    /**
-     * Returns the unique identifier for the device
-     *
-     * @return unique identifier for the device
-     */
-    private fun getDeviceIMEI(): String? {
-        var deviceUniqueIdentifier: String? = null
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            deviceUniqueIdentifier = Settings.Secure.getString(
-                activity?.contentResolver,
-                Settings.Secure.ANDROID_ID
-            )
-        } else {
-            val mTelephony =
-                activity?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            if (mTelephony.deviceId != null) {
-                deviceUniqueIdentifier = mTelephony.deviceId
-            } else {
-                deviceUniqueIdentifier = Settings.Secure.getString(
-                    activity?.contentResolver,
-                    Settings.Secure.ANDROID_ID
-                )
+    private fun attachObserver() {
+
+        viewModel.assignmentSaveResponse.observe(requireActivity()) { response ->
+            if (response != null) {
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        if (response.data != null) {
+                            val status = response.data.status
+                            if(status=="valid") {
+                                progressDialog.dismiss()
+                                findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+                            } else {
+                                saveImageLocally()
+                            }
+                        }
+                    }
+                    Resource.Status.LOADING -> {
+                        progressDialog.show()
+                    }
+                    Resource.Status.ERROR -> {
+                        saveImageLocally()
+                        //response.message?.let { it1 -> Toasty.error(requireContext(), it1) }
+                    }
+                }
             }
         }
-        return deviceUniqueIdentifier
     }
 
+    private fun saveImageLocally() {
+        imageArray1?.toString()
+            ?.let { WallDao.insertWallImages(wallId!!, it) }
+        progressDialog.dismiss()
+        Toasty.error(
+            requireContext(),
+            "Failed to upload images.",
+            Toast.LENGTH_SHORT,
+            false
+        ).show()
+        findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+    }
+
+
     private fun initView() {
-
-        progressDialog = ProgressDialog(context)
-        progressDialog?.setMessage("Please Wait")
-        progressDialog?.setCancelable(false)
-
         val gps = GPSTracker(context)
 
         // check if GPS enabled
@@ -245,129 +275,192 @@ class AddImageFragment : Fragment(), PermissionUtil.PermissionsCallBack, TextWat
     }
 
     private fun createObject() {
-        val imageArray = JSONArray()
+        imageArray?.clear()
+        imageArray1 = JSONArray()
         val wall_starting = assignment.wall_covered + 1
-        val wallId = assignment.assignment_code.uppercase() + "-" + wall_starting
+        wallId = assignment.assignment_code.uppercase() + "-" + wall_starting
         try {
 
             if (!card1PicBytes.isNullOrEmpty()) {
-                val imageObj = JSONObject()
-                imageObj.put("project_id", assignment.project_code_id)
-                imageObj.put("customer_id", assignment.customer_code_id)
-                imageObj.put("assignment_id", assignment.id)
-                imageObj.put("assignment_code", assignment.assignment_code.uppercase())
-                imageObj.put("wall_id", wallId)
-                imageObj.put("lat", latitude)
-                imageObj.put("long", longitude)
-                imageObj.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
-                imageObj.put("imei", IMEI?.uppercase())
-                imageObj.put("image_bitmap", card1PicBytes)
-                imageArray.put(imageObj)
+                val imageObj = AssignmentImageRequest()
+                imageObj.project_id = assignment.project_code_id
+                imageObj.customer_id = assignment.customer_code_id
+                imageObj.assignment_id = assignment.id
+                imageObj.assignment_code = assignment.assignment_code.uppercase()
+                imageObj.wall_id = wallId
+                imageObj.lat = latitude
+                imageObj.long = longitude
+                imageObj.sq_ft_covered = getStringFromEditText(binding.edtDimension)
+                imageObj.imei = IMEI?.uppercase()
+                imageObj.image_bitmap = card1PicBytes
+                imageArray?.add(imageObj)
+
+                val imageObj1 = JSONObject()
+                imageObj1.put("project_id", assignment.project_code_id)
+                imageObj1.put("customer_id", assignment.customer_code_id)
+                imageObj1.put("assignment_id", assignment.id)
+                imageObj1.put("assignment_code", assignment.assignment_code.uppercase())
+                imageObj1.put("wall_id", wallId)
+                imageObj1.put("lat", latitude)
+                imageObj1.put("long", longitude)
+                imageObj1.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
+                imageObj1.put("imei", IMEI?.uppercase())
+                imageObj1.put("image_bitmap",card1PicBytes)
+                imageArray1!!.put(imageObj1)
+
             }
 
             if (!card2PicBytes.isNullOrEmpty()) {
-                val imageObj = JSONObject()
-                imageObj.put("project_id", assignment.project_code_id)
-                imageObj.put("customer_id", assignment.customer_code_id)
-                imageObj.put("assignment_id", assignment.id)
-                imageObj.put("assignment_code", assignment.assignment_code.uppercase())
-                imageObj.put("wall_id", wallId)
-                imageObj.put("lat", latitude)
-                imageObj.put("long", longitude)
-                imageObj.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
-                imageObj.put("imei", IMEI?.uppercase())
-                imageObj.put("image_bitmap", card2PicBytes)
-                imageArray.put(imageObj)
+                val imageObj = AssignmentImageRequest()
+                imageObj.project_id = assignment.project_code_id
+                imageObj.customer_id = assignment.customer_code_id
+                imageObj.assignment_id = assignment.id
+                imageObj.assignment_code = assignment.assignment_code.uppercase()
+                imageObj.wall_id = wallId
+                imageObj.lat = latitude
+                imageObj.long = longitude
+                imageObj.sq_ft_covered = getStringFromEditText(binding.edtDimension)
+                imageObj.imei = IMEI?.uppercase()
+                imageObj.image_bitmap = card2PicBytes
+                imageArray?.add(imageObj)
+
+                val imageObj1 = JSONObject()
+                imageObj1.put("project_id", assignment.project_code_id)
+                imageObj1.put("customer_id", assignment.customer_code_id)
+                imageObj1.put("assignment_id", assignment.id)
+                imageObj1.put("assignment_code", assignment.assignment_code.uppercase())
+                imageObj1.put("wall_id", wallId)
+                imageObj1.put("lat", latitude)
+                imageObj1.put("long", longitude)
+                imageObj1.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
+                imageObj1.put("imei", IMEI?.uppercase())
+                imageObj1.put("image_bitmap",card2PicBytes)
+                imageArray1!!.put(imageObj1)
             }
 
             if (!card3PicBytes.isNullOrEmpty()) {
-                val imageObj = JSONObject()
-                imageObj.put("project_id", assignment.project_code_id)
-                imageObj.put("customer_id", assignment.customer_code_id)
-                imageObj.put("assignment_id", assignment.id)
-                imageObj.put("assignment_code", assignment.assignment_code.uppercase())
-                imageObj.put("wall_id", wallId)
-                imageObj.put("lat", latitude)
-                imageObj.put("long", longitude)
-                imageObj.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
-                imageObj.put("imei", IMEI?.uppercase())
-                imageObj.put("image_bitmap", card3PicBytes)
-                imageArray.put(imageObj)
+                val imageObj = AssignmentImageRequest()
+                imageObj.project_id = assignment.project_code_id
+                imageObj.customer_id = assignment.customer_code_id
+                imageObj.assignment_id = assignment.id
+                imageObj.assignment_code = assignment.assignment_code.uppercase()
+                imageObj.wall_id = wallId
+                imageObj.lat = latitude
+                imageObj.long = longitude
+                imageObj.sq_ft_covered = getStringFromEditText(binding.edtDimension)
+                imageObj.imei = IMEI?.uppercase()
+                imageObj.image_bitmap = card3PicBytes
+                imageArray?.add(imageObj)
+
+                val imageObj1 = JSONObject()
+                imageObj1.put("project_id", assignment.project_code_id)
+                imageObj1.put("customer_id", assignment.customer_code_id)
+                imageObj1.put("assignment_id", assignment.id)
+                imageObj1.put("assignment_code", assignment.assignment_code.uppercase())
+                imageObj1.put("wall_id", wallId)
+                imageObj1.put("lat", latitude)
+                imageObj1.put("long", longitude)
+                imageObj1.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
+                imageObj1.put("imei", IMEI?.uppercase())
+                imageObj1.put("image_bitmap",card3PicBytes)
+                imageArray1!!.put(imageObj1)
             }
 
             if (!card4PicBytes.isNullOrEmpty()) {
-                val imageObj = JSONObject()
-                imageObj.put("project_id", assignment.project_code_id)
-                imageObj.put("customer_id", assignment.customer_code_id)
-                imageObj.put("assignment_id", assignment.id)
-                imageObj.put("assignment_code", assignment.assignment_code.uppercase())
-                imageObj.put("wall_id", wallId)
-                imageObj.put("lat", latitude)
-                imageObj.put("long", longitude)
-                imageObj.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
-                imageObj.put("imei", IMEI?.uppercase())
-                imageObj.put("image_bitmap", card4PicBytes)
+                val imageObj = AssignmentImageRequest()
+                imageObj.project_id = assignment.project_code_id
+                imageObj.customer_id = assignment.customer_code_id
+                imageObj.assignment_id = assignment.id
+                imageObj.assignment_code = assignment.assignment_code.uppercase()
+                imageObj.wall_id = wallId
+                imageObj.lat = latitude
+                imageObj.long = longitude
+                imageObj.sq_ft_covered = getStringFromEditText(binding.edtDimension)
+                imageObj.imei = IMEI?.uppercase()
+                imageObj.image_bitmap = card4PicBytes
+                imageArray?.add(imageObj)
 
-                imageArray.put(imageObj)
+                val imageObj1 = JSONObject()
+                imageObj1.put("project_id", assignment.project_code_id)
+                imageObj1.put("customer_id", assignment.customer_code_id)
+                imageObj1.put("assignment_id", assignment.id)
+                imageObj1.put("assignment_code", assignment.assignment_code.uppercase())
+                imageObj1.put("wall_id", wallId)
+                imageObj1.put("lat", latitude)
+                imageObj1.put("long", longitude)
+                imageObj1.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
+                imageObj1.put("imei", IMEI?.uppercase())
+                imageObj1.put("image_bitmap",card4PicBytes)
+                imageArray1!!.put(imageObj1)
             }
 
             if (!card5PicBytes.isNullOrEmpty()) {
-                val imageObj = JSONObject()
-                imageObj.put("project_id", assignment.project_code_id)
-                imageObj.put("customer_id", assignment.customer_code_id)
-                imageObj.put("assignment_id", assignment.id)
-                imageObj.put("assignment_code", assignment.assignment_code.uppercase())
-                imageObj.put("wall_id", wallId)
-                imageObj.put("lat", latitude)
-                imageObj.put("long", longitude)
-                imageObj.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
-                imageObj.put("imei", IMEI?.uppercase())
-                imageObj.put("image_bitmap", card5PicBytes)
+                val imageObj = AssignmentImageRequest()
+                imageObj.project_id = assignment.project_code_id
+                imageObj.customer_id = assignment.customer_code_id
+                imageObj.assignment_id = assignment.id
+                imageObj.assignment_code = assignment.assignment_code.uppercase()
+                imageObj.wall_id = wallId
+                imageObj.lat = latitude
+                imageObj.long = longitude
+                imageObj.sq_ft_covered = getStringFromEditText(binding.edtDimension)
+                imageObj.imei = IMEI?.uppercase()
+                imageObj.image_bitmap = card5PicBytes
+                imageArray?.add(imageObj)
 
-                imageArray.put(imageObj)
+                val imageObj1 = JSONObject()
+                imageObj1.put("project_id", assignment.project_code_id)
+                imageObj1.put("customer_id", assignment.customer_code_id)
+                imageObj1.put("assignment_id", assignment.id)
+                imageObj1.put("assignment_code", assignment.assignment_code.uppercase())
+                imageObj1.put("wall_id", wallId)
+                imageObj1.put("lat", latitude)
+                imageObj1.put("long", longitude)
+                imageObj1.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
+                imageObj1.put("imei", IMEI?.uppercase())
+                imageObj1.put("image_bitmap",card5PicBytes)
+                imageArray1!!.put(imageObj1)
             }
 
             if (!card6PicBytes.isNullOrEmpty()) {
-                val imageObj = JSONObject()
-                imageObj.put("project_id", assignment.project_code_id)
-                imageObj.put("customer_id", assignment.customer_code_id)
-                imageObj.put("assignment_id", assignment.id)
-                imageObj.put("assignment_code", assignment.assignment_code.uppercase())
-                imageObj.put("wall_id", wallId)
-                imageObj.put("lat", latitude)
-                imageObj.put("long", longitude)
-                imageObj.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
-                imageObj.put("imei", IMEI?.uppercase())
-                imageObj.put("image_bitmap", card6PicBytes)
-                imageArray.put(imageObj)
+                val imageObj = AssignmentImageRequest()
+                imageObj.project_id = assignment.project_code_id
+                imageObj.customer_id = assignment.customer_code_id
+                imageObj.assignment_id = assignment.id
+                imageObj.assignment_code = assignment.assignment_code.uppercase()
+                imageObj.wall_id = wallId
+                imageObj.lat = latitude
+                imageObj.long = longitude
+                imageObj.sq_ft_covered = getStringFromEditText(binding.edtDimension)
+                imageObj.imei = IMEI?.uppercase()
+                imageObj.image_bitmap = card6PicBytes
+                imageArray?.add(imageObj)
+
+                val imageObj1 = JSONObject()
+                imageObj1.put("project_id", assignment.project_code_id)
+                imageObj1.put("customer_id", assignment.customer_code_id)
+                imageObj1.put("assignment_id", assignment.id)
+                imageObj1.put("assignment_code", assignment.assignment_code.uppercase())
+                imageObj1.put("wall_id", wallId)
+                imageObj1.put("lat", latitude)
+                imageObj1.put("long", longitude)
+                imageObj1.put("sq_ft_covered", getStringFromEditText(binding.edtDimension))
+                imageObj1.put("imei", IMEI?.uppercase())
+                imageObj1.put("image_bitmap",card6PicBytes)
+                imageArray1!!.put(imageObj1)
             }
         } catch (e: JSONException) {
             e.printStackTrace()
         }
 
-        progressDialog?.show()
-        Log.d("SubmitImages", SharedPrefConstant.UPLOAD_IMAGE_URL)
-        VendorServices.uploadImages(context,
-            imageArray.toString(),
-            object : UploadImagesCallback {
-                override fun onSuccess() {
-                    WallDao.deleteWallImages(wallId)
-                    if (progressDialog?.isShowing!!) {
-                        progressDialog?.dismiss()
-                    }
-                    findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-                }
-
-                override fun onFailure(msg: String?) {
-                    WallDao.insertWallImages(wallId, imageArray.toString())
-                    if (progressDialog?.isShowing!!) {
-                        progressDialog?.dismiss()
-                    }
-                    if (!msg.isNullOrEmpty()) {
-                        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
+        //progressDialog.show()
+        val assignmentData = AssignmentSaveRequest()
+        assignmentData.images = imageArray
+        try {
+            viewModel.saveAssignmentImages(assignmentData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun requestPermissions() {

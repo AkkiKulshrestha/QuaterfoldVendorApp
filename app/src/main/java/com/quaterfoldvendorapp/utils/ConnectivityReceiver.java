@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.quaterfoldvendorapp.application.MyApplication;
+import com.quaterfoldvendorapp.application.QuaterfoldApplication;
+
+import java.util.Objects;
 
 public class ConnectivityReceiver
         extends BroadcastReceiver {
@@ -23,7 +25,7 @@ public class ConnectivityReceiver
 
     public static boolean isConnected() {
         ConnectivityManager
-                cm = (ConnectivityManager) MyApplication.getInstance().getApplicationContext()
+                cm = (ConnectivityManager) Objects.requireNonNull(QuaterfoldApplication.Companion.getInstance()).getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null

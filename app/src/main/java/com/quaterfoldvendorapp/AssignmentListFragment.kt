@@ -3,7 +3,6 @@ package com.quaterfoldvendorapp
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,20 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.DefaultRetryPolicy
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.quaterfoldvendorapp.data.Agentinfo
-import com.quaterfoldvendorapp.data.Assignment
+import com.quaterfoldvendorapp.data.*
 import com.quaterfoldvendorapp.data.local.dao.WallDao
 import com.quaterfoldvendorapp.databinding.FragmentAssignmentListBinding
+import com.quaterfoldvendorapp.domain.ApiViewModel
 import com.quaterfoldvendorapp.interfaces.UploadImagesCallback
 import com.quaterfoldvendorapp.sharedpreference.SharedPrefManager
 import com.quaterfoldvendorapp.ui.JobListAdapter
-import com.quaterfoldvendorapp.utils.SharedPrefConstant
-import com.quaterfoldvendorapp.utils.VendorServices
+import com.quaterfoldvendorapp.utils.Convertor
+import es.dmoral.toasty.Toasty
 import org.json.JSONObject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,36 +30,103 @@ import org.json.JSONObject
 class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
 
     private lateinit var binding: FragmentAssignmentListBinding
+    private lateinit var progressDialog: ProgressDialog
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private lateinit var jobListAdapter: JobListAdapter
-    var assignmentList: ArrayList<Assignment> = ArrayList<Assignment>()
     var layoutManager: RecyclerView.LayoutManager? = null
     lateinit var assignment: Assignment
     var agentinfo: Agentinfo? = null
     var posId: String? = null
-    var progressDialog: ProgressDialog? = null
     var pendingCallCount = 0
+    private val viewModel: ApiViewModel by viewModel()
+    val assignmentList = mutableListOf<Assignment>()
+    var wallId: String?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAssignmentListBinding.inflate(inflater, container, false)
+
+        progressDialog = ProgressDialog(requireActivity())
+        progressDialog.setMessage("Please Wait")
+        progressDialog.setCancelable(false)
+
+        attachObserver()
         initView()
 
         return binding.root
     }
 
-    private fun initView() {
-        //getting agent info
-        agentinfo = SharedPrefManager.getInstance(context).agent
-        posId = agentinfo?.id
+    private fun attachObserver() {
 
-        progressDialog = ProgressDialog(context)
-        progressDialog?.setMessage("Please Wait")
-        progressDialog?.setCancelable(false)
+        viewModel.assignmentResponse.observe(requireActivity()) { response ->
+            if (response != null) {
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        progressDialog.dismiss()
+                        assignmentList.clear()
+                        if (response.data?.data != null && response.data.status == "valid") {
+                            val responseData = response.data.data
+                            assignmentList.addAll(responseData)
+                            jobListAdapter.updateData(assignmentList)
+                            jobListAdapter.setListener(this)
+                        } else {
+                            progressDialog.dismiss()
+                            assignmentList.clear()
+                            Toasty.error(
+                                requireContext(),
+                                "Failed to get data. Please try again later.",
+                                Toast.LENGTH_SHORT,
+                                false
+                            ).show()
+                        }
+                    }
+                    Resource.Status.LOADING -> {
+                        progressDialog.show()
+                    }
+                    Resource.Status.ERROR -> {
+                        progressDialog.dismiss()
+                        assignmentList.clear()
+                        response.message?.let { it1 -> Toasty.error(requireContext(), it1) }
+                    }
+                }
+            }
+        }
+
+        viewModel.assignmentSaveResponse.observe(requireActivity()) { response ->
+            if (response != null) {
+                when (response.status) {
+                    Resource.Status.SUCCESS -> {
+                        if (response.data != null) {
+                            val status = response.data.status
+                            if(status=="valid") {
+                                if (!wallId.isNullOrEmpty()) {
+                                    WallDao.deleteWallImages(wallId!!)
+                                }
+                                handlePendingCallResponse()
+                            } else {
+                                handlePendingCallResponse()
+                            }
+
+                        }
+                    }
+                    Resource.Status.LOADING -> {
+                        //progressDialog.show()
+                    }
+                    Resource.Status.ERROR -> {
+                        //progressDialog.dismiss()
+                        handlePendingCallResponse()
+                        response.message?.let { it1 -> Toasty.error(requireContext(), it1) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initView() {
 
         binding.assignmentList.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
@@ -85,82 +148,12 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
     }
 
     private fun getAssignmentData() {
-        val assignmentUrl = SharedPrefConstant.ASSIGNMENT_LIST_URL + "?vendor_id=" + posId
-        Log.d("AssignmentListUrl", "" + assignmentUrl)
-        val stringRequest = StringRequest(
-            Request.Method.GET, assignmentUrl,
-            { response ->
-                try {
-                    Log.d("assignmentListResponse", "" + response)
-                    val responseObj = JSONObject(response)
-                    val status = responseObj.getString("status")
-                    if ("valid".equals(status, ignoreCase = true)) {
-                        val dataArray = responseObj.getJSONArray("data")
+        agentinfo = SharedPrefManager.getInstance(context).agent
+        posId = agentinfo?.id
 
-                        val assignmentList = mutableListOf<Assignment>()
-                        for (i in 0 until dataArray.length()) {
-                            val dataObj: JSONObject =
-                                dataArray.getJSONObject(i)
-                            //Customer vehicle info
-                            val id = dataObj.getString("id")
-                            val customer_code_id = dataObj.getString("customer_code_id")
-                            val project_code_id = dataObj.getString("project_code_id")
-                            val assignment_code =
-                                dataObj.getString("assignment_code")
-                            val state = dataObj.getString("state")
-                            val district = dataObj.getString("district")
-                            val sub_district = dataObj.getString("sub_district")
-                            val town = dataObj.getString("town")
-                            val village = dataObj.getString("village")
-                            val brand = dataObj.getString("brand")
-                            val no_of_walls = dataObj.getInt("no_of_walls")
-                            val wall_size = dataObj.getString("wall_size")
-                            val total_sq_feet = dataObj.getString("total_sq_feet")
-                            val work_type = dataObj.getString("work_type")
-                            val wall_covered = dataObj.getInt("wall_covered")
-                            val sq_ft_covered = dataObj.getInt("sq_ft_covered")
-
-                            assignment = Assignment()
-                            assignment.id = id
-                            assignment.customer_code_id = customer_code_id
-                            assignment.project_code_id = project_code_id
-                            assignment.assignment_code = assignment_code
-                            assignment.state = state
-                            assignment.district = district
-                            assignment.sub_district = sub_district
-                            assignment.town = town
-                            assignment.village = village
-                            assignment.brand = brand
-                            assignment.no_of_walls = no_of_walls
-                            assignment.wall_size = wall_size
-                            assignment.total_sq_feet = total_sq_feet
-                            assignment.work_type = work_type
-                            assignment.wall_covered = wall_covered
-                            assignment.sq_ft_covered = sq_ft_covered
-
-                            assignmentList.add(assignment)
-                        }
-                        jobListAdapter.updateData(assignmentList)
-                        jobListAdapter.setListener(this)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        ) { error ->
-            error.printStackTrace()
-            Toast.makeText(
-                requireActivity(),
-                "App under maintenance. Please try again later.",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
-        stringRequest.retryPolicy =
-            DefaultRetryPolicy(20 * 1000, 3, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-
-        val requestQueue = Volley.newRequestQueue(context)
-        requestQueue.add(stringRequest)
+        val assignmentData = AssignmentRequest()
+        assignmentData.vendor_id = posId
+        viewModel.getAssignmentList(assignmentData)
     }
 
     private fun uploadPendingWallImages() {
@@ -171,18 +164,13 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
         }
         pendingCallCount = pendingWallImages.size
         pendingWallImages.forEach {
-            VendorServices.uploadImages(context,
-                it.imageArray,
-                object : UploadImagesCallback {
-                    override fun onSuccess() {
-                        WallDao.deleteWallImages(it._id)
-                        handlePendingCallResponse()
-                    }
+            val images =  it.imageArray
+            val imgArrayList =  Convertor.convertJsonToArray(images)
 
-                    override fun onFailure(msg: String?) {
-                        handlePendingCallResponse()
-                    }
-                })
+            val assignmentData = AssignmentSaveRequest()
+            wallId = it._id
+            assignmentData.images = imgArrayList
+            viewModel.saveAssignmentImages(assignmentData)
         }
     }
 
