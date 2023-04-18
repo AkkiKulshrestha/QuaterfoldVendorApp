@@ -52,27 +52,28 @@ class LoginActivity : AppCompatActivity() {
                 when (response.status) {
                     Resource.Status.SUCCESS -> {
                         progressDialog.dismiss()
-                        if (response.data?.data != null && response.data.status == "valid") {
+                        //Toasty.info(this, "--->>>>> "+ response.data?.status).show()
+                        if (response.data?.status == "valid") {
                             val responseData = response.data.data
 
                             val agentInfo = Agentinfo()
-                            agentInfo.setId(responseData.id)
-                            agentInfo.setVendor_code(responseData.vendor_code)
-                            agentInfo.setUsername(responseData.username)
-                            agentInfo.setCompany_name(responseData.company_name)
-                            agentInfo.setEmail(responseData.email)
-                            agentInfo.setMobile(responseData.mobile)
-                            agentInfo.setContact(responseData.contact)
-                            agentInfo.setAddress_line_1(responseData.address_line_1)
-                            agentInfo.setAddress_line_2(responseData.address_line_2)
-                            agentInfo.setCity(responseData.city)
-                            agentInfo.setState(responseData.state)
-                            agentInfo.setPincode(responseData.pincode)
-                            agentInfo.setWorking_cities(responseData.working_cities)
-                            agentInfo.setImei_no(responseData.imei_no)
+                            agentInfo.setId(responseData?.id)
+                            agentInfo.setVendor_code(responseData?.vendor_code)
+                            agentInfo.setUsername(responseData?.username)
+                            agentInfo.setCompany_name(responseData?.company_name)
+                            agentInfo.setEmail(responseData?.email)
+                            agentInfo.setMobile(responseData?.mobile)
+                            agentInfo.setContact(responseData?.contact)
+                            agentInfo.setAddress_line_1(responseData?.address_line_1)
+                            agentInfo.setAddress_line_2(responseData?.address_line_2)
+                            agentInfo.setCity(responseData?.city)
+                            agentInfo.setState(responseData?.state)
+                            agentInfo.setPincode(responseData?.pincode)
+                            agentInfo.setWorking_cities(responseData?.working_cities)
+                            agentInfo.setImei_no(responseData?.imei_no)
 
                             SharedPrefManager.getInstance(this).agentLogin(agentInfo)
-                            UtilitySharedPreferences.setPrefs(this, "agent_id", responseData.id)
+                            UtilitySharedPreferences.setPrefs(this, "agent_id", responseData?.id)
                             Toasty.success(this, "Login Successful", Toast.LENGTH_SHORT, true)
                                 .show()
                             val intent = Intent(this, MainActivity::class.java)
@@ -104,6 +105,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        //binding.editPhone.setText("8299842470")
+        //binding.editPassword.setText("Pawa@2470")
+
         binding.btnLogin.setOnClickListener {
             if (isValid()) {
                 signIn()
@@ -120,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
         val userData = LoginRequest()
         userData.username = mobileNo
         userData.password = md5(password)
-        userData.imei = IMEI
+        //userData.imei = IMEI
         viewModel.userLogin(userData)
     }
 

@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 100010000,
-      "versionName": "1.0.0",
-      "outputFile": "quaterfoldvendorapp-v1.0.0-release.apk"
+      "versionCode": 100010001,
+      "versionName": "1.0.1",
+      "outputFile": "quaterfoldvendorapp-v1.0.1-release.apk"
     }
   ],
   "elementType": "File"

@@ -77,20 +77,33 @@
         app:layout_constraintStart_toStartOf="@+id/errorphone"
         app:layout_constraintTop_toBottomOf="@+id/errorphone" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_password"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPasswordLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp27"
         android:layout_marginTop="@dimen/dp10"
-        android:background="@drawable/ic_edittext_bg"
-        android:hint="@string/enter_password"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:paddingHorizontal="@dimen/dp10"
-        android:textColorHint="@color/p_support"
+        app:hintEnabled="false"
         app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_edittext_bg"
+            android:drawablePadding="5dp"
+            android:hint="@string/enter_password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLength="20"
+            android:padding="5dp"
+            android:textColor="@color/black_main"
+            android:textColorHint="@color/p_support"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/errorpass"
@@ -101,7 +114,7 @@
         android:textSize="@dimen/sp14"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordLayout" />
 
     <TextView
         android:id="@+id/forgot_pass"

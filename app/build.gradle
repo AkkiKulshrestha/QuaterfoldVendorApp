@@ -24,6 +24,20 @@ private String generateVersionName() {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('D:\\QuaterfoldVendorApp\\quaterfold.jks')
+            storePassword 'quaterfold'
+            keyAlias 'quaterfold'
+            keyPassword 'quaterfold'
+        }
+        release {
+            storeFile file('D:\\QuaterfoldVendorApp\\quaterfold.jks')
+            storePassword 'quaterfold'
+            keyAlias 'quaterfold'
+            keyPassword 'quaterfold'
+        }
+    }
     namespace 'com.quaterfoldvendorapp'
     compileSdkVersion 33
     defaultConfig {
@@ -37,6 +51,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         setProperty("archivesBaseName", "quaterfoldvendorapp" + "-v" + versionName)
+        signingConfig signingConfigs.release
     }
 
     buildFeatures {
@@ -56,6 +71,7 @@ android {
         pickFirst("META-INF/atomicfu.kotlin_module")
     }
 
+
     buildTypes {
         debug {
             applicationIdSuffix ''
@@ -68,7 +84,8 @@ android {
             proguardFile file('./proguard-project.txt')
         }
     }
-    buildToolsVersion '30.0.3'
+
+    buildToolsVersion '31.0.0'
 }
 
 dependencies {
