@@ -17,6 +17,7 @@ buildscript {
     ext.rangeBar_version = '1.4.4'
     ext.lifecycle_viewmodel_version = "2.2.0"
     ext.jodatime_version = "2.10.1"
+    ext.libVersion = "2.3.22"
     repositories {
         mavenCentral()
         google()

@@ -1,5 +1,6 @@
 package com.quaterfoldvendorapp.domain
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.quaterfoldvendorapp.data.*
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class ApiViewModel constructor(
     private val apiUseCase: ApiUseCase
@@ -45,7 +49,8 @@ class ApiViewModel constructor(
         showProgressbar.value = true
         _assignmentResponse.postValue(Resource.loading())
         viewModelScope.launch {
-            apiUseCase.getAssignmentList(partMap).let {
+            try {
+                apiUseCase.getAssignmentList(partMap).let {
                 if (it.isSuccessful) {
                     _assignmentResponse.postValue(Resource.success(it.body()))
                 } else {
@@ -55,6 +60,23 @@ class ApiViewModel constructor(
                     _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
                 }
             }
+            }catch (se: SocketTimeoutException) {
+                Log.e("TAG", "Error: ${se.message}")
+                val message = "Failed to get data. Please try again later"
+                _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            }  catch (se: UnknownHostException) {
+                Log.e("TAG", "Error: ${se.message}")
+                val message = "Failed to get data. Please try again later"
+                _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            }  catch (se: ConnectException) {
+                Log.e("TAG", "Error: ${se.message}")
+                val message = "Failed to get data. Please try again later"
+                _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            } catch (ex: Throwable) {
+                Log.e("TAG", "Error ${ex.message}")
+                val message = "Failed to get data. Please try again later"
+                _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            }
         }
     }
 
@@ -62,17 +84,34 @@ class ApiViewModel constructor(
         showProgressbar.value = true
         _assignmentSaveResponse.postValue(Resource.loading())
         viewModelScope.launch {
-            apiUseCase.saveAssignmentImages(partMap).let {
-                if (it.isSuccessful) {
-                    _assignmentSaveResponse.postValue(Resource.success(it.body()))
-                } else {
-                    val jsonObj = it.errorBody()?.charStream()?.readText()
-                        ?.let { it1 -> JSONObject(it1) }
-                    val message = "Failed to get data. Please try again later"
-                    _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            try {
+                apiUseCase.saveAssignmentImages(partMap).let {
+                    if (it.isSuccessful) {
+                        _assignmentSaveResponse.postValue(Resource.success(it.body()))
+                    } else {
+                        val jsonObj = it.errorBody()?.charStream()?.readText()
+                            ?.let { it1 -> JSONObject(it1) }
+                        val message = "Failed to upload data. Please try again later"
+                        _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+                    }
                 }
+            } catch (se: SocketTimeoutException) {
+                Log.e("TAG", "Error: ${se.message}")
+                val message = "Failed to upload data. Please try again later"
+                _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            }  catch (se: UnknownHostException) {
+                Log.e("TAG", "Error: ${se.message}")
+                val message = "Failed to upload data. Please try again later"
+                _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            }  catch (se: ConnectException) {
+                Log.e("TAG", "Error: ${se.message}")
+                val message = "Failed to upload data. Please try again later"
+                _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            } catch (ex: Throwable) {
+                Log.e("TAG", "Error ${ex.message}")
+                 val message = "Failed to upload data. Please try again later"
+                _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
             }
         }
     }
-
 }

@@ -1,20 +1,19 @@
 package com.quaterfoldvendorapp.interfaces
 
 import com.quaterfoldvendorapp.data.*
+import com.quaterfoldvendorapp.utils.AppConstant
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiRepository {
 
-    @POST("appLogin.php")
+    @POST(AppConstant.LOGIN_URL)
     suspend fun userLogin(@Body body: LoginRequest): Response<LoginModel>
 
-    @POST("appGetListOfAssignment.php")
+    @POST(AppConstant.ASSIGNMENT_LIST_URL)
     suspend fun getAssignmentList(@Body body: AssignmentRequest): Response<AssignmentModel>
 
-    @POST("appUploadAssignmentImages.php")
+    @POST(AppConstant.UPLOAD_IMAGE_URL)
     suspend fun saveAssignmentImages(@Body body: AssignmentSaveRequest): Response<AssignmentModel>
 }

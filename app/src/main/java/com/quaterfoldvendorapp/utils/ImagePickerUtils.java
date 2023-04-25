@@ -19,10 +19,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Objects;
 
-public class ImagePicker {
+public class ImagePickerUtils {
 
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
-    private static final String TAG = ImagePicker.class.getSimpleName();
+    private static final String TAG = ImagePickerUtils.class.getSimpleName();
 
     public static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
 

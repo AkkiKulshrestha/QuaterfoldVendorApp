@@ -3,7 +3,7 @@ package com.quaterfoldvendorapp.application
 import com.quaterfoldvendorapp.interfaces.ApiRepository
 import com.quaterfoldvendorapp.interfaces.ApiService
 import com.quaterfoldvendorapp.domain.ApiUseCase
-import com.quaterfoldvendorapp.utils.SharedPrefConstant
+import com.quaterfoldvendorapp.utils.AppConstant
 import com.squareup.moshi.Moshi
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
@@ -19,11 +19,11 @@ val NetworkModule = module {
 
     single { createService(get()) }
 
-    single { createRetrofit(get(), SharedPrefConstant.BASE_URL) }
+    single { createRetrofit(get(), AppConstant.BASE_URL) }
 
     single { createOkHttpClient() }
 
-    single { createWebService<ApiService>(get(), SharedPrefConstant.BASE_URL) }
+    single { createWebService<ApiService>(get(), AppConstant.BASE_URL) }
 
     single { MoshiConverterFactory.create() }
 
@@ -35,10 +35,11 @@ fun createOkHttpClient(): OkHttpClient {
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
     val client = OkHttpClient.Builder()
-    client.connectTimeout(180, TimeUnit.SECONDS);
-    client.readTimeout(60, TimeUnit.SECONDS)
-    client.writeTimeout(180, TimeUnit.SECONDS)
+    client.connectTimeout(5, TimeUnit.MINUTES)
+    client.readTimeout(5, TimeUnit.MINUTES)
+    client.writeTimeout(5, TimeUnit.MINUTES)
     client.connectionPool(ConnectionPool(0, 5, TimeUnit.MINUTES))
+    client.pingInterval(5,  TimeUnit.SECONDS)
     client.protocols(listOf(Protocol.HTTP_1_1))
     return client.addInterceptor {
         val original = it.request()
@@ -51,9 +52,9 @@ fun createOkHttpClient(): OkHttpClient {
 
 fun createRetrofit(okHttpClient: OkHttpClient, url: String): Retrofit {
     return Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(url)
         .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create()).build()
 }
 

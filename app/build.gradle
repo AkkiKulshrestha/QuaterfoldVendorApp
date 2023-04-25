@@ -208,4 +208,7 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.5.0'
     implementation "net.danlew:android.joda:$jodatime_version"
 
+    // image picker
+    implementation "com.github.Drjacky:ImagePicker:$libVersion"
+
 }
