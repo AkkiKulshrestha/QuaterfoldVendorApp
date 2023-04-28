@@ -13,7 +13,7 @@ ext.startVersion = 100000000 // 100,000,000
 /* Only change below 3 variables to update app version*/
 ext.versionMajor = 1
 ext.versionMinor = 0
-ext.versionPatch = 1
+ext.versionPatch = 2
 
 private Integer generateVersionCode() {
     return ext.startVersion + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
@@ -77,9 +77,6 @@ android {
             applicationIdSuffix ''
         }
         release {
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
             proguardFile getDefaultProguardFile('proguard-android.txt')
             proguardFile file('./proguard-project.txt')
         }

@@ -1,5 +1,6 @@
 package com.quaterfoldvendorapp.data.local.dao
 
+import android.util.Log
 import com.quaterfoldvendorapp.data.local.entity.EntityWallModel
 import io.realm.Realm
 import io.realm.kotlin.deleteFromRealm
@@ -18,6 +19,7 @@ object WallDao {
                 it.insertOrUpdate(wall)
             }
         } catch (e: Exception) {
+            Log.e("LocallException", Log.getStackTraceString(e))
             e.printStackTrace()
         } finally {
             if (realm?.isClosed == false) {

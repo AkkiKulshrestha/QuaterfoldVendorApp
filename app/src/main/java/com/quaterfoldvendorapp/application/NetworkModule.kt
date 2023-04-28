@@ -39,7 +39,7 @@ fun createOkHttpClient(): OkHttpClient {
     client.readTimeout(5, TimeUnit.MINUTES)
     client.writeTimeout(5, TimeUnit.MINUTES)
     client.connectionPool(ConnectionPool(0, 5, TimeUnit.MINUTES))
-    client.pingInterval(5,  TimeUnit.SECONDS)
+    //client.pingInterval(20,  TimeUnit.SECONDS)
     client.protocols(listOf(Protocol.HTTP_1_1))
     return client.addInterceptor {
         val original = it.request()

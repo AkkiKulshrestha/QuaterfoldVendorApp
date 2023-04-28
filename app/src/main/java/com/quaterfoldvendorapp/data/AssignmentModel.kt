@@ -37,6 +37,11 @@ data class AssignmentRequest(
     var vendor_id: String? = null
 )
 
+@JsonClass(generateAdapter = true)
+data class ImageUploadResponseBody(
+    var status: Boolean? = false,
+    var message: String? = null
+)
 
 @JsonClass(generateAdapter = true)
 data class AssignmentSaveRequest(

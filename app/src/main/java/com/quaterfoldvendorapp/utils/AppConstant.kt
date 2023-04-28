@@ -5,4 +5,5 @@ object AppConstant {
     const val LOGIN_URL = "appLogin.php"
     const val ASSIGNMENT_LIST_URL = "appGetListOfAssignment.php"
     const val UPLOAD_IMAGE_URL = "appUploadAssignmentImages.php"
+    const val UPLOAD_IMAGE_NEW_URL = "upload_media_test.php"
 }
