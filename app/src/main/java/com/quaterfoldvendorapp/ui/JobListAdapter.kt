@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.quaterfoldvendorapp.R
 import com.quaterfoldvendorapp.data.Assignment
-import com.quaterfoldvendorapp.data.JobModel
 import com.quaterfoldvendorapp.databinding.AssignmentListItemBinding
+import com.quaterfoldvendorapp.utils.gone
+import com.quaterfoldvendorapp.utils.visible
 
 class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
 
     private val assignments = mutableListOf<Assignment>()
     private var hasWarning = false
-    private lateinit var listener : Listener
+    private lateinit var listener: Listener
     /**
      * updates the adapter data
      *
@@ -22,6 +23,16 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
         this.assignments.clear()
         val safeList = data?.mapNotNull { it }
         if (!safeList.isNullOrEmpty()) this.assignments.addAll(safeList)
+        notifyDataSetChanged()
+    }
+
+    fun filterList(filterList: ArrayList<Assignment>) {
+        this.assignments.clear()
+        // below line is to add our filtered
+        // list in our course array list.
+        assignments.addAll(filterList)
+        // below line is to notify our adapter
+        // as change in recycler view data.
         notifyDataSetChanged()
     }
 
@@ -54,10 +65,17 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
         fun bind(position: Int) {
 
             binding.apply {
-                val assignment =  assignments[position]
-                brand.text = "Brand: " +assignment.brand?.uppercase()
-                assignmentId.text = "Assignment : " + assignment.assignment_code?.uppercase()
+                val assignment = assignments[position]
+                brand.text = "Brand: " + assignment.brand.uppercase()
+                assignmentId.text = "Assignment : " + assignment.assignment_code.uppercase()
 
+                val dealerName = assignment.dealer_name
+                if (!dealerName.isNullOrEmpty()) {
+                    assignmentDealerName.text = "Dealer Name : " + dealerName
+                    assignmentDealerName.visible()
+                } else {
+                    assignmentDealerName.gone()
+                }
                 val locationBuilder = StringBuilder()
                 val village = assignment.village
                 if (village.isNotEmpty() && !village.equals("-")) {
@@ -84,8 +102,9 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
                     locationBuilder.append(state.uppercase())
                 }
 
-                assignmentLocation.text = "Location: " + locationBuilder?.toString()
-                noOfWalls.text = "No Of Walls: " + assignment.no_of_walls + "\nWalls Covered: " + assignment.wall_covered
+                assignmentLocation.text = "Location: " + locationBuilder.toString()
+                noOfWalls.text =
+                    "No Of Walls: " + assignment.no_of_walls + "\nWalls Covered: " + assignment.wall_covered
 
                 if (assignment.wall_covered >= assignment.no_of_walls) {
                     row.setBackgroundColor(root.context.resources.getColor(R.color.success_almost))
@@ -106,6 +125,5 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
     interface Listener {
         fun onClickListener(assignment: Assignment)
     }
-
 }
 

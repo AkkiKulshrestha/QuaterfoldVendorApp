@@ -18,6 +18,7 @@ data class Assignment(
     @SerializedName("project_code_id") var project_code_id: String = "",
     @SerializedName("project_status_id") var project_status_id: String = "",
     @SerializedName("assignment_code") var assignment_code: String = "",
+    @SerializedName("dealer_name") var dealer_name: String = "",
     @SerializedName("state") var state: String = "",
     @SerializedName("district") var district: String = "",
     @SerializedName("sub_district") var sub_district: String = "",

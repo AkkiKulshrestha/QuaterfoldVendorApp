@@ -3,6 +3,8 @@ package com.quaterfoldvendorapp
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +18,12 @@ import com.quaterfoldvendorapp.data.*
 import com.quaterfoldvendorapp.data.local.dao.WallDao
 import com.quaterfoldvendorapp.databinding.FragmentAssignmentListBinding
 import com.quaterfoldvendorapp.domain.ApiViewModel
-import com.quaterfoldvendorapp.interfaces.UploadImagesCallback
 import com.quaterfoldvendorapp.sharedpreference.SharedPrefManager
 import com.quaterfoldvendorapp.ui.JobListAdapter
 import com.quaterfoldvendorapp.utils.Convertor
 import es.dmoral.toasty.Toasty
-import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -42,7 +43,8 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
     var pendingCallCount = 0
     private val viewModel: ApiViewModel by viewModel()
     val assignmentList = mutableListOf<Assignment>()
-    var wallId: String?=null
+    var wallId: String? = null
+    private lateinit var courseModelArrayList: ArrayList<Assignment>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,8 +70,10 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
                     Resource.Status.SUCCESS -> {
                         progressDialog.dismiss()
                         assignmentList.clear()
+                        courseModelArrayList = ArrayList()
                         if (response.data?.data != null && response.data.status == "valid") {
                             val responseData = response.data.data
+                            courseModelArrayList.addAll(responseData)
                             assignmentList.addAll(responseData)
                             jobListAdapter.updateData(assignmentList)
                             jobListAdapter.setListener(this)
@@ -102,7 +106,7 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
                     Resource.Status.SUCCESS -> {
                         if (response.data != null) {
                             val status = response.data.status
-                            if(status=="valid") {
+                            if (status == "valid") {
                                 if (!wallId.isNullOrEmpty()) {
                                     WallDao.deleteWallImages(wallId!!)
                                 }
@@ -144,7 +148,52 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
             binding.assignmentList.itemAnimator = DefaultItemAnimator()
         }
 
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable) {}
+        })
+
         uploadPendingWallImages()
+    }
+
+    private fun filter(text: String?) {
+        // creating a new array list to filter our data.
+        val filteredlist = ArrayList<Assignment>()
+
+        // running a for loop to compare elements.
+        for (item in courseModelArrayList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (!text.isNullOrEmpty()) {
+                if (item.assignment_code.lowercase().contains(text.lowercase())
+                    || item.dealer_name.lowercase().contains(text.lowercase())
+                    || item.state.lowercase().contains(text.lowercase())
+                    || item.district.lowercase().contains(text.lowercase())
+                    || item.village.lowercase().contains(text.lowercase())
+                    || item.sub_district.lowercase().contains(text.lowercase())
+                    || item.town.lowercase().contains(text.lowercase())
+                    || item.brand.lowercase().contains(text.lowercase())
+                ) {
+                    // if the item is matched we are
+                    // adding it to our filtered list.
+                    filteredlist.add(item)
+                }
+            } else {
+                filteredlist.addAll(courseModelArrayList)
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            //Toast.makeText(activity, "No Data Found..", Toast.LENGTH_SHORT).show()
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            jobListAdapter.filterList(filteredlist)
+        }
     }
 
     private fun getAssignmentData() {
@@ -164,8 +213,8 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
         }
         pendingCallCount = pendingWallImages.size
         pendingWallImages.forEach {
-            val images =  it.imageArray
-            val imgArrayList =  Convertor.convertJsonToArray(images)
+            val images = it.imageArray
+            val imgArrayList = Convertor.convertJsonToArray(images)
 
             val assignmentData = AssignmentSaveRequest()
             wallId = it._id
