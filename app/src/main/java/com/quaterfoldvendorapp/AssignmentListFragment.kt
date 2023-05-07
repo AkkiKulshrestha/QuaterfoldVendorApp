@@ -44,7 +44,7 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
     private val viewModel: ApiViewModel by viewModel()
     val assignmentList = mutableListOf<Assignment>()
     var wallId: String? = null
-    private lateinit var courseModelArrayList: ArrayList<Assignment>
+    private var assignmentModelArrayList: ArrayList<Assignment>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,10 +70,10 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
                     Resource.Status.SUCCESS -> {
                         progressDialog.dismiss()
                         assignmentList.clear()
-                        courseModelArrayList = ArrayList()
+                        assignmentModelArrayList = ArrayList()
                         if (response.data?.data != null && response.data.status == "valid") {
                             val responseData = response.data.data
-                            courseModelArrayList.addAll(responseData)
+                            assignmentModelArrayList?.addAll(responseData)
                             assignmentList.addAll(responseData)
                             jobListAdapter.updateData(assignmentList)
                             jobListAdapter.setListener(this)
@@ -165,24 +165,26 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
         val filteredlist = ArrayList<Assignment>()
 
         // running a for loop to compare elements.
-        for (item in courseModelArrayList) {
-            // checking if the entered string matched with any item of our recycler view.
-            if (!text.isNullOrEmpty()) {
-                if (item.assignment_code.lowercase().contains(text.lowercase())
-                    || item.dealer_name.lowercase().contains(text.lowercase())
-                    || item.state.lowercase().contains(text.lowercase())
-                    || item.district.lowercase().contains(text.lowercase())
-                    || item.village.lowercase().contains(text.lowercase())
-                    || item.sub_district.lowercase().contains(text.lowercase())
-                    || item.town.lowercase().contains(text.lowercase())
-                    || item.brand.lowercase().contains(text.lowercase())
-                ) {
-                    // if the item is matched we are
-                    // adding it to our filtered list.
-                    filteredlist.add(item)
+        if (!assignmentModelArrayList.isNullOrEmpty()) {
+            for (item in assignmentModelArrayList!!) {
+                // checking if the entered string matched with any item of our recycler view.
+                if (!text.isNullOrEmpty()) {
+                    if (item.assignment_code.lowercase().contains(text.lowercase())
+                        || item.dealer_name.lowercase().contains(text.lowercase())
+                        || item.state.lowercase().contains(text.lowercase())
+                        || item.district.lowercase().contains(text.lowercase())
+                        || item.village.lowercase().contains(text.lowercase())
+                        || item.sub_district.lowercase().contains(text.lowercase())
+                        || item.town.lowercase().contains(text.lowercase())
+                        || item.brand.lowercase().contains(text.lowercase())
+                    ) {
+                        // if the item is matched we are
+                        // adding it to our filtered list.
+                        filteredlist.add(item)
+                    }
+                } else {
+                    filteredlist.addAll(assignmentModelArrayList!!)
                 }
-            } else {
-                filteredlist.addAll(courseModelArrayList)
             }
         }
         if (filteredlist.isEmpty()) {
