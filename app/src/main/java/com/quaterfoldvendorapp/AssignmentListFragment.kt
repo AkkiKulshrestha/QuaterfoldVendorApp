@@ -35,15 +35,14 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private lateinit var jobListAdapter: JobListAdapter
-    var layoutManager: RecyclerView.LayoutManager? = null
-    lateinit var assignment: Assignment
-    var agentinfo: Agentinfo? = null
-    var posId: String? = null
-    var pendingCallCount = 0
+    private var jobListAdapter: JobListAdapter? = null
+    private var layoutManager: RecyclerView.LayoutManager? = null
+    private var agentinfo: Agentinfo? = null
+    private var posId: String? = null
+    private var pendingCallCount = 0
     private val viewModel: ApiViewModel by viewModel()
-    val assignmentList = mutableListOf<Assignment>()
-    var wallId: String? = null
+    private val assignmentList = mutableListOf<Assignment>()
+    private var wallId: String? = null
     private var assignmentModelArrayList: ArrayList<Assignment>? = null
 
     override fun onCreateView(
@@ -75,8 +74,11 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
                             val responseData = response.data.data
                             assignmentModelArrayList?.addAll(responseData)
                             assignmentList.addAll(responseData)
-                            jobListAdapter.updateData(assignmentList)
-                            jobListAdapter.setListener(this)
+                            if (jobListAdapter == null) {
+                                jobListAdapter = JobListAdapter()
+                            }
+                            jobListAdapter?.updateData(assignmentList)
+                            jobListAdapter?.setListener(this)
                         } else {
                             progressDialog.dismiss()
                             assignmentList.clear()
@@ -167,6 +169,7 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
         // running a for loop to compare elements.
         if (!assignmentModelArrayList.isNullOrEmpty()) {
             for (item in assignmentModelArrayList!!) {
+                0
                 // checking if the entered string matched with any item of our recycler view.
                 if (!text.isNullOrEmpty()) {
                     if (item.assignment_code.lowercase().contains(text.lowercase())
@@ -194,7 +197,8 @@ class AssignmentListFragment : Fragment(), JobListAdapter.Listener {
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
-            jobListAdapter.filterList(filteredlist)
+            jobListAdapter?.filterList(filteredlist)
+            jobListAdapter?.setListener(this)
         }
     }
 

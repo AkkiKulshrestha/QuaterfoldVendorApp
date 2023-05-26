@@ -13,7 +13,7 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
 
     private val assignments = mutableListOf<Assignment>()
     private var hasWarning = false
-    private lateinit var listener: Listener
+    private var listener: Listener? = null
     /**
      * updates the adapter data
      *
@@ -113,7 +113,7 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.Holder>() {
                 }
 
                 executeCta.setOnClickListener {
-                    listener.onClickListener(assignment)
+                    listener?.onClickListener(assignment)
                 }
 
             }

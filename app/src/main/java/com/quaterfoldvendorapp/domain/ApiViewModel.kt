@@ -82,6 +82,10 @@ class ApiViewModel constructor(
                 Log.e("TAG", "Error ${ex.message}")
                 val message = "Failed to get data. Please try again later"
                 _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            } catch (e: Exception) {
+                Log.e("TAG", "Error ${e.message}")
+                val message = "Something went wrong. Please check Internet Connectivity & Try Again !"
+                _assignmentResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
             }
         }
     }
@@ -116,6 +120,10 @@ class ApiViewModel constructor(
             } catch (ex: Throwable) {
                 Log.e("TAG", "Error ${ex.message}")
                  val message = "Failed to upload data. Please try again later"
+                _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            } catch (e: Exception) {
+                Log.e("TAG", "Error ${e.message}")
+                val message = "Something went wrong. Please check Internet Connectivity & Try Again !"
                 _assignmentSaveResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
             }
         }
@@ -157,6 +165,10 @@ class ApiViewModel constructor(
             } catch (ex: Throwable) {
                 Log.e("TAG", "Error ${ex.message}")
                 val message = "Failed to upload images. Please try again later"
+                _uploadImageResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
+            }  catch (e: Exception) {
+                Log.e("TAG", "Error ${e.message}")
+                val message = "Something went wrong. Please check Internet Connectivity & Try Again !"
                 _uploadImageResponse.postValue(message.let { it1 -> Resource.error(it1, null) })
             }
         }
