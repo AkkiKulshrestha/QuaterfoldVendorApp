@@ -18,17 +18,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Execution Mode Details"
+                android:layout_marginTop="@dimen/dp8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Spinner
+                    android:id="@+id/wall_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txt_walls_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text=" / 20" />
+
+
+
+            </LinearLayout>
+
             <TextView
+                android:id="@+id/wall_id_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp16"
+                tools:text="Wall Id: sXXXXXXXX"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_execution_mode" />
+
+          <!--  <TextView
                 android:id="@+id/txt_walls_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="5/20" />
+                tools:text="5/20" />-->
 
             <TextView
                 android:id="@+id/txt_select_brand"
@@ -39,7 +74,7 @@
                 android:text="Brand"
                 android:textSize="@dimen/sp12"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_walls_progress" />
+                app:layout_constraintTop_toBottomOf="@id/wall_id_txt" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edt_brand"

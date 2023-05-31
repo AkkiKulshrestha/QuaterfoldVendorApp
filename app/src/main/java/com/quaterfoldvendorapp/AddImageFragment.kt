@@ -6,11 +6,9 @@ import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,9 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,6 +41,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -68,7 +65,7 @@ class AddImageFragment : Fragment(), TextWatcher {
     private val PERMISSION_REQUEST_CODE = 200
     private lateinit var assignment: Assignment
     private val viewModel: ApiViewModel by viewModel()
-
+    private var wall_selected: String? = "1"
     var is_set = 0
     var permissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -206,9 +203,51 @@ class AddImageFragment : Fragment(), TextWatcher {
             gps.showSettingsAlert()
         }
 
-        val wall_starting = assignment.wall_covered + 1
+        val distint_wall_ids = assignment.distinct_wall_id
+        val totalNoOfWalls = assignment.no_of_walls
+        val list: MutableList<String> = ArrayList()
+        if (totalNoOfWalls != 0) {
+            for (i in 1 until totalNoOfWalls + 1) {
+
+                val check_wall_id = assignment.assignment_code.uppercase() + "-" + i
+                if (!distint_wall_ids.isNullOrEmpty()) {
+                    if (!distint_wall_ids.contains(check_wall_id)) {
+                        list.add("Wall $i")
+                    }
+                } else {
+                    list.add("Wall $i")
+                }
+            }
+        }
+
+        val adp1: ArrayAdapter<String>? = context?.let {
+            ArrayAdapter<String>(
+                it,
+                android.R.layout.simple_list_item_1, list
+            )
+        }
+        adp1?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.wallCount.adapter = adp1
+        binding.wallCount.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedWall = parentView?.getItemAtPosition(position).toString()
+                val trimmedWallNo = selectedWall.replace("Wall ", "", ignoreCase = true)
+                wall_selected = trimmedWallNo
+                binding.wallIdTxt.text = "WALL ID: "+ assignment.assignment_code.uppercase() + "-" + wall_selected
+                // your code here
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // your code here
+            }
+        }
         binding.txtWallsProgress.text =
-            wall_starting.toString() + "/ " + assignment.no_of_walls.toString()
+            "/ " + assignment.no_of_walls.toString()
         binding.edtBrand.setText(assignment.brand.uppercase())
         binding.edtType.setText(assignment.work_type)
 
@@ -322,9 +361,10 @@ class AddImageFragment : Fragment(), TextWatcher {
         }
 
         if (!(!selectedPath1.equals("NONE", true) || !selectedPath2.equals("NONE", true)
-            || !selectedPath3.equals("NONE", true) || !selectedPath4.equals("NONE", true)
-            || !selectedPath5.equals("NONE", true) || !selectedPath6.equals("NONE", true)
-        )) {
+                    || !selectedPath3.equals("NONE", true) || !selectedPath4.equals("NONE", true)
+                    || !selectedPath5.equals("NONE", true) || !selectedPath6.equals("NONE", true)
+                    )
+        ) {
             Toast.makeText(
                 activity,
                 "Please select at-least two files to upload.",
@@ -339,8 +379,7 @@ class AddImageFragment : Fragment(), TextWatcher {
     private fun createObject() {
         imageArray?.clear()
         imageArray1 = JSONArray()
-        val wall_starting = assignment.wall_covered + 1
-        wallId = assignment.assignment_code.uppercase() + "-" + wall_starting
+        wallId = assignment.assignment_code.uppercase() + "-" + wall_selected
         try {
 
             if (!card1PicBytes.isNullOrEmpty()) {
@@ -505,7 +544,7 @@ class AddImageFragment : Fragment(), TextWatcher {
 
         //doFileUpload()
         try {
-            var file1Data : MultipartBody.Part ?= null
+            var file1Data: MultipartBody.Part? = null
             file1Data = if (!selectedPath1.equals("NONE", true)) {
                 val file1 = File(selectedPath1)
                 MultipartBody.Part
@@ -514,12 +553,14 @@ class AddImageFragment : Fragment(), TextWatcher {
                         filename = file1.name,
                         body = file1.asRequestBody()
                     )
-            } else{
-                MultipartBody.Part.createFormData("attachment", "", RequestBody.create(
-                    "text/plain".toMediaTypeOrNull(), ""));
+            } else {
+                MultipartBody.Part.createFormData(
+                    "attachment", "", ""
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                )
             }
 
-            var file2Data : MultipartBody.Part ?= null
+            var file2Data: MultipartBody.Part? = null
             file2Data = if (!selectedPath2.equals("NONE", true)) {
                 val file2 = File(selectedPath2)
                 MultipartBody.Part
@@ -528,12 +569,14 @@ class AddImageFragment : Fragment(), TextWatcher {
                         filename = file2.name,
                         body = file2.asRequestBody()
                     )
-            } else{
-                MultipartBody.Part.createFormData("attachment", "", RequestBody.create(
-                    "text/plain".toMediaTypeOrNull(), ""));
+            } else {
+                MultipartBody.Part.createFormData(
+                    "attachment", "", ""
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                )
             }
 
-            var file3Data : MultipartBody.Part ?= null
+            var file3Data: MultipartBody.Part? = null
             file3Data = if (!selectedPath3.equals("NONE", true)) {
                 val file3 = File(selectedPath3)
                 MultipartBody.Part
@@ -542,12 +585,14 @@ class AddImageFragment : Fragment(), TextWatcher {
                         filename = file3.name,
                         body = file3.asRequestBody()
                     )
-            } else{
-                MultipartBody.Part.createFormData("attachment", "", RequestBody.create(
-                    "text/plain".toMediaTypeOrNull(), ""));
+            } else {
+                MultipartBody.Part.createFormData(
+                    "attachment", "", ""
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                )
             }
 
-            var file4Data : MultipartBody.Part ?= null
+            var file4Data: MultipartBody.Part? = null
             file4Data = if (!selectedPath4.equals("NONE", true)) {
                 val file4 = File(selectedPath4)
                 MultipartBody.Part
@@ -556,12 +601,14 @@ class AddImageFragment : Fragment(), TextWatcher {
                         filename = file4.name,
                         body = file4.asRequestBody()
                     )
-            } else{
-                MultipartBody.Part.createFormData("attachment", "", RequestBody.create(
-                    "text/plain".toMediaTypeOrNull(), ""));
+            } else {
+                MultipartBody.Part.createFormData(
+                    "attachment", "", ""
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                )
             }
 
-            var file5Data : MultipartBody.Part ?= null
+            var file5Data: MultipartBody.Part? = null
             file5Data = if (!selectedPath5.equals("NONE", true)) {
                 val file5 = File(selectedPath5)
                 MultipartBody.Part
@@ -570,12 +617,14 @@ class AddImageFragment : Fragment(), TextWatcher {
                         filename = file5.name,
                         body = file5.asRequestBody()
                     )
-            } else{
-                MultipartBody.Part.createFormData("attachment", "", RequestBody.create(
-                    "text/plain".toMediaTypeOrNull(), ""));
+            } else {
+                MultipartBody.Part.createFormData(
+                    "attachment", "", ""
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                )
             }
 
-            var file6Data : MultipartBody.Part ?= null
+            var file6Data: MultipartBody.Part? = null
             file6Data = if (!selectedPath6.equals("NONE", true)) {
                 val file6 = File(selectedPath6)
                 MultipartBody.Part
@@ -584,15 +633,25 @@ class AddImageFragment : Fragment(), TextWatcher {
                         filename = file6.name,
                         body = file6.asRequestBody()
                     )
-            } else{
-                MultipartBody.Part.createFormData("attachment", "", RequestBody.create(
-                    "text/plain".toMediaTypeOrNull(), ""));
+            } else {
+                MultipartBody.Part.createFormData(
+                    "attachment", "", ""
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                )
             }
 
             val images = imageArray1.toString()
             Log.d("imagessss--->>", images)
             progressDialog.show()
-            viewModel.uploadAssignmentImages(images, file1Data, file2Data, file3Data, file4Data, file5Data, file6Data)
+            viewModel.uploadAssignmentImages(
+                images,
+                file1Data,
+                file2Data,
+                file3Data,
+                file4Data,
+                file5Data,
+                file6Data
+            )
         } catch (e: Exception) {
 
             e.printStackTrace()

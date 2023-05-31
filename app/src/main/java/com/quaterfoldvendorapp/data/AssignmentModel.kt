@@ -30,7 +30,8 @@ data class Assignment(
     @SerializedName("total_sq_feet") var total_sq_feet: String = "",
     @SerializedName("work_type") var work_type: String = "",
     @SerializedName("wall_covered") var wall_covered: Int = 0,
-    @SerializedName("sq_ft_covered") var sq_ft_covered: Int = 0
+    @SerializedName("sq_ft_covered") var sq_ft_covered: Int = 0,
+    @SerializedName("distinct_wall_id") var distinct_wall_id: List<String>? = null
 ) : Parcelable
 
 @JsonClass(generateAdapter = true)
