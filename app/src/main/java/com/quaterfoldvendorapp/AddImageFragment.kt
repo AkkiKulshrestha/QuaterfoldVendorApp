@@ -296,28 +296,31 @@ class AddImageFragment : Fragment(), TextWatcher {
     private fun registerLauncher() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                if (result.resultCode === RESULT_OK) {
+                if (result.resultCode == RESULT_OK) {
                     val uri: Uri? = result.data?.data
                     // Use the uri to load the image
                     uri?.let { setData(it) }
 
-                } else if (result.resultCode === ImagePicker.RESULT_ERROR) {
+                } else if (result.resultCode == ImagePicker.RESULT_ERROR) {
                     // Use to show an error
                     val error = ImagePicker.Companion.getError(result.data)
-                    Toasty.error(requireContext(), "" + error).show()
+                    activity?.let { Toasty.error(it, "" + error).show() }
                 }
             }
     }
 
     private fun openGalleryOrCamera() {
-        ImagePicker.with(requireActivity()).provider(ImageProvider.BOTH).crop()
-            .createIntentFromDialog { launcher.launch(it) }
+        activity?.let { activity ->
+            ImagePicker.with(activity).provider(ImageProvider.BOTH).crop()
+                .maxResultSize(1080, 1920, true)
+                .createIntentFromDialog { launcher.launch(it) }
+        }
     }
 
     private fun validateDimension() {
         val dimension = binding.edtDimension.text?.toString()?.trim()?.toIntOrNull() ?: 0
         val dimensionCovered = assignment.sq_ft_covered
-        val totalDimension = assignment.total_sq_feet.toString().trim().toInt()
+        val totalDimension = assignment.total_sq_feet.trim().toInt()
 
         val differenceInDimen =
             totalDimension.minus(dimensionCovered)
