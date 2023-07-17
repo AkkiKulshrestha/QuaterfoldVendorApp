@@ -17,17 +17,19 @@
                 android:id="@+id/txt_execution_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Execution Mode Details"
                 android:layout_marginTop="@dimen/dp8"
+                android:text="Execution Mode Details"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/layout_wall_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp4"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_execution_mode">
 
                 <Spinner
                     android:id="@+id/wall_count"
@@ -44,7 +46,6 @@
                     tools:text=" / 20" />
 
 
-
             </LinearLayout>
 
             <TextView
@@ -52,18 +53,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp16"
-                tools:text="Wall Id: sXXXXXXXX"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_execution_mode" />
+                app:layout_constraintTop_toBottomOf="@id/layout_wall_count"
+                tools:text="Wall Id: sXXXXXXXX" />
 
-          <!--  <TextView
-                android:id="@+id/txt_walls_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="5/20" />-->
+            <!--  <TextView
+                  android:id="@+id/txt_walls_progress"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  tools:text="5/20" />-->
 
             <TextView
                 android:id="@+id/txt_select_brand"

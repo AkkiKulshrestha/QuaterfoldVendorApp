@@ -39,7 +39,6 @@ import com.quaterfoldvendorapp.utils.*
 import es.dmoral.toasty.Toasty
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
@@ -124,7 +123,7 @@ class AddImageFragment : Fragment(), TextWatcher {
         progressDialog.setCancelable(false)
         pDialog = ProgressDialog(context)
 
-        IMEI = DeviceInfoUtils.getIMEI(requireActivity())
+        IMEI = DeviceInfoUtils.getIMEI(activity)
 
         attachObserver()
         initView()
@@ -135,42 +134,44 @@ class AddImageFragment : Fragment(), TextWatcher {
 
     private fun attachObserver() {
 
-        viewModel.uploadImageResponse.observe(requireActivity()) { response ->
-            if (response != null) {
-                when (response.status) {
-                    Resource.Status.SUCCESS -> {
-                        if (progressDialog.isShowing) progressDialog.dismiss()
-                        if (response.data != null) {
-                            val status = response.data.status
-                            val message = response.data.message
-                            if (status == true) {
-                                activity?.let {
-                                    if (message != null) {
-                                        Toasty.success(it, message).show()
+        activity?.let { it ->
+            viewModel.uploadImageResponse.observe(it) { response ->
+                if (response != null) {
+                    when (response.status) {
+                        Resource.Status.SUCCESS -> {
+                            if (progressDialog.isShowing) progressDialog.dismiss()
+                            if (response.data != null) {
+                                val status = response.data.status
+                                val message = response.data.message
+                                if (status == true) {
+                                    activity?.let {
+                                        if (message != null) {
+                                            Toasty.success(it, message).show()
+                                        }
                                     }
-                                }
-                                val intent = Intent(context, MainActivity::class.java)
-                                intent.apply {
-                                    startActivity(this)
-                                    activity?.finish()
-                                }
-                            } else {
-                                //saveImageLocally()
-                                activity?.let {
-                                    if (message != null) {
-                                        Toasty.error(it, message).show()
+                                    val intent = Intent(context, MainActivity::class.java)
+                                    intent.apply {
+                                        startActivity(this)
+                                        activity?.finish()
+                                    }
+                                } else {
+                                    //saveImageLocally()
+                                    activity?.let {
+                                        if (message != null) {
+                                            Toasty.error(it, message).show()
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    Resource.Status.LOADING -> {
-                        progressDialog.show()
-                    }
-                    Resource.Status.ERROR -> {
-                        if (progressDialog.isShowing) progressDialog.dismiss()
-                        //saveImageLocally()
-                        response.message?.let { it1 -> Toasty.error(requireContext(), it1) }
+                        Resource.Status.LOADING -> {
+                            progressDialog.show()
+                        }
+                        Resource.Status.ERROR -> {
+                            if (progressDialog.isShowing) progressDialog.dismiss()
+                            //saveImageLocally()
+                            response.message?.let { it1 ->  activity?.let { Toasty.error(it, it1) } }
+                        }
                     }
                 }
             }
@@ -207,6 +208,7 @@ class AddImageFragment : Fragment(), TextWatcher {
         val totalNoOfWalls = assignment.no_of_walls
         val list: MutableList<String> = ArrayList()
         if (totalNoOfWalls != 0) {
+            list.add("Select Wall")
             for (i in 1 until totalNoOfWalls + 1) {
 
                 val check_wall_id = assignment.assignment_code.uppercase() + "-" + i
@@ -235,10 +237,13 @@ class AddImageFragment : Fragment(), TextWatcher {
                 position: Int,
                 id: Long
             ) {
-                val selectedWall = parentView?.getItemAtPosition(position).toString()
-                val trimmedWallNo = selectedWall.replace("Wall ", "", ignoreCase = true)
-                wall_selected = trimmedWallNo
-                binding.wallIdTxt.text = "WALL ID: "+ assignment.assignment_code.uppercase() + "-" + wall_selected
+                if (position != 0) {
+                    val selectedWall = parentView?.getItemAtPosition(position).toString()
+                    val trimmedWallNo = selectedWall.replace("Wall ", "", ignoreCase = true)
+                    wall_selected = trimmedWallNo
+                    binding.wallIdTxt.text =
+                        "WALL ID: " + assignment.assignment_code.uppercase() + "-" + wall_selected
+                }
                 // your code here
             }
 
@@ -311,9 +316,13 @@ class AddImageFragment : Fragment(), TextWatcher {
 
     private fun openGalleryOrCamera() {
         activity?.let { activity ->
-            ImagePicker.with(activity).provider(ImageProvider.BOTH).crop()
-                .maxResultSize(1080, 1920, true)
-                .createIntentFromDialog { launcher.launch(it) }
+            launcher.launch(
+                ImagePicker.with(activity)
+                    .crop()
+                    .cameraOnly()
+                    .maxResultSize(1080, 1920, true)
+                    .createIntent()
+            )
         }
     }
 
@@ -339,17 +348,24 @@ class AddImageFragment : Fragment(), TextWatcher {
         val differenceInDimen =
             totalDimension.minus(dimensionCovered)
         if (dimension.isNullOrEmpty()) {
-            Toast.makeText(context, "Please enter a valid dimension", Toast.LENGTH_SHORT).show()
+            context?.let { Toasty.warning(it, "Please enter a valid dimension").show() }
             return false
         } else {
             if (dimension.toInt() > differenceInDimen) {
-                Toast.makeText(
-                    context,
-                    "Dimensions cannot exceed " + differenceInDimen,
-                    Toast.LENGTH_SHORT
-                ).show()
+                context?.let {
+                    Toasty.warning(
+                        it,
+                        "Dimensions cannot exceed " + differenceInDimen,
+                    ).show()
+                }
                 return false
             }
+        }
+
+        if (binding.wallCount.selectedItemPosition == 0) {
+            context?.let { Toasty.warning(it, "Please select Wall").show() }
+            (binding.wallCount.selectedView as TextView).error = "Select Wall"
+            return false
         }
 
         if (card1PicBytes.isNullOrEmpty()
@@ -359,7 +375,7 @@ class AddImageFragment : Fragment(), TextWatcher {
             && card5PicBytes.isNullOrEmpty()
             && card6PicBytes.isNullOrEmpty()
         ) {
-            Toast.makeText(context, "Please upload at-least 2 images", Toast.LENGTH_SHORT).show()
+            activity?.let { Toasty.warning(it, "Please upload at-least 2 images").show() }
             return false
         }
 
@@ -368,11 +384,12 @@ class AddImageFragment : Fragment(), TextWatcher {
                     || !selectedPath5.equals("NONE", true) || !selectedPath6.equals("NONE", true)
                     )
         ) {
-            Toast.makeText(
-                activity,
-                "Please select at-least two files to upload.",
-                Toast.LENGTH_SHORT
-            ).show()
+            activity?.let { Toasty.warning(it, "Please select at-least two files to upload.").show() }
+            return false
+        }
+
+        if (latitude == 0.0 || longitude == 0.0) {
+            activity?.let { Toasty.warning(it, "Unable to get location. Can't upload Images.").show() }
             return false
         }
 
